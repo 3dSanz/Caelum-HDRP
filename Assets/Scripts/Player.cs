@@ -202,7 +202,7 @@ public class Player : MonoBehaviour
 
         // Calcula la direccion de movimiento en el plano XZ (sin componente Z)
         Vector3 _moveDirection = Quaternion.Euler(0, _targetAngle, 0) * Vector3.forward;
-        _moveDirection.y = 0; // Bloquea el movimiento en el eje Z
+        _moveDirection.z = 0; // Bloquea el movimiento en el eje Z
 
         // Normaliza y aplica la velocidad de movimiento
         _controller.Move(_moveDirection.normalized * _vel * Time.deltaTime);
@@ -240,7 +240,7 @@ public class Player : MonoBehaviour
 
         foreach (Collider enemy in enemies)
         {
-            //enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
+            enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
         }
 
         /*Collider[] projectiles = Physics.OverlapSphere(transform.position, attackRadius, bulletLayer);
@@ -258,7 +258,7 @@ public class Player : MonoBehaviour
 
         foreach (Collider enemy in enemies)
         {
-            //enemy.GetComponent<Enemy>().TakeDamage(_damage);
+            enemy.GetComponent<Enemy>().TakeDamage(_damage);
         }
         _controller.Move(Vector3.up * downwardAttackForce * Time.deltaTime);
     }

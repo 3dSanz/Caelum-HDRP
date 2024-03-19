@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
-{/*
+{
     enum State
     {
         Patroling,
@@ -24,10 +24,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] float _detectionRange = 2;
     [SerializeField] float _attackRange =1;
 
-    [SerializeField] float maxHealth = 3f;
+    [SerializeField] float _maxHealth = 3f;
     [SerializeField] bool _isAttacking = false;
 
-    private float currentHealth;
+    [SerializeField] private float _currentHealth;
 
      void Awake()
     {
@@ -36,14 +36,14 @@ public class Enemy : MonoBehaviour
     }
     void Start()
     {
-        currentHealth = maxHealth;
+        _currentHealth = _maxHealth;
         PuntoAleatorio();
-        _currentState = State.Patrolling;
+        _currentState = State.Patroling;
     }
 
     void Update()
     {
-        switch(currentState)
+        switch(_currentState)
         {
             case State.Patroling:
             Patrol();
@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        currentHealth -= amount;
+        _currentHealth -= amount;
 
         if (_currentHealth <= 0)
         {
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
         _agent.destination = _player.position;
         if(EnRango(_detectionRange) == false)
         {
-            _currentState = State.Patrolling;
+            _currentState = State.Patroling;
         }
 
         if(EnRango(_attackRange) == true)
@@ -135,5 +135,5 @@ public class Enemy : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _detectionRange);
-    }*/
+    }
 }
