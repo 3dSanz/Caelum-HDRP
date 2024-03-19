@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _lookUp;
     [SerializeField] private bool _lookDown;
     [SerializeField] private float downwardAttackForce = 15;
-    [SerializeField] private Transform _attackForward;
+    [SerializeField] private Transform _attackForward, _attackUp, _attackDown;
 
     //Dash
     public float dashDistance = 10f;
@@ -111,7 +111,7 @@ public class Player : MonoBehaviour
         }*/
         if (_lookUp == true && Input.GetButtonDown("Fire1"))
         {
-            PerformAttack(_damage);
+            PerformUpAttack(_damage);
             //_anim.SetBool("upAttack", true);
             Debug.Log("Ataque hacia arriba");
         }else
@@ -128,14 +128,15 @@ public class Player : MonoBehaviour
         {
             _lookDown = false;
         }
+
         if (_isGrounded == false && _lookDown == true && Input.GetButtonDown("Fire1"))
         {
-            PerformDownwardAttack();
+            DownAttack();
             //_anim.SetBool("downAttack", true);
             Debug.Log("Ataque Hacia Abajo en salto");
         }else
         {
-            //_anim.SetBool("upAttack", false);
+            //_anim.SetBool("downAttack", false);
         }
 
         //Dash
@@ -251,10 +252,28 @@ public class Player : MonoBehaviour
         }*/
     }
 
-    void PerformDownwardAttack()
+    void PerformUpAttack(float _inputDamage)
+    {
+
+       Collider[] enemies = Physics.OverlapSphere(_attackUp.position, attackRadius, enemyLayer);
+
+        foreach (Collider enemy in enemies)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
+        }
+
+        /*Collider[] projectiles = Physics.OverlapSphere(transform.position, attackRadius, bulletLayer);
+        foreach (Collider projectile in projectiles)
+        {
+            projectile = GetComponent<Projectile>();
+            ReturnShoot();
+        }*/
+    }
+
+    void DownAttack()
     {
         //animator.SetTrigger("DownwardAttack"); // Activa la animacion de el ataque hacia abajo
-        Collider[] enemies = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
+        Collider[] enemies = Physics.OverlapSphere(_attackDown.position, attackRadius, enemyLayer);
 
         foreach (Collider enemy in enemies)
         {
@@ -339,7 +358,7 @@ public class Player : MonoBehaviour
     {
         //Anadir boleana al enemigo que indique si el enemigo esta atacando, si el enemigo se encuentra en el estado de ataque que se ejecute el parry
         Enemy enemy = target.GetComponent<Enemy>();
-        if (enemy != null) //enemy.isAttacking == true
+        if (enemy != null) //enemy._isAttacking == true
         {  
             PerformAttack(_damageStrong);
             _anim.SetTrigger("Parry_Attack");
@@ -361,6 +380,12 @@ public class Player : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(_posicionSensor.position, _radioSensor);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_attackDown.position, attackRadius);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_attackUp.position, attackRadius);
     }
     
 }

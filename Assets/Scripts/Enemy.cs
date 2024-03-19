@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float _attackRange =1;
 
     [SerializeField] float _maxHealth = 3f;
-    [SerializeField] bool _isAttacking = false;
+    [SerializeField] public bool _isAttacking;
 
     [SerializeField] private float _currentHealth;
 
@@ -65,6 +65,10 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
+        if (_currentHealth <= 0)
+        {
+            Invoke(nameof(Die), 0.5f);
+        }
     }
 
     void Die()
@@ -95,13 +99,16 @@ public class Enemy : MonoBehaviour
 
         if(EnRango(_attackRange) == true)
         {
+            _isAttacking = true;
             _currentState = State.Attacking;
+
         }
     }
 
     void Attack()
     {
         Debug.Log("PUM!");
+        _isAttacking = false;
         _currentState = State.Chasing;
     }
 
