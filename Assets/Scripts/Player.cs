@@ -34,7 +34,18 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _lookUp;
     [SerializeField] private bool _lookDown;
     [SerializeField] private float downwardAttackForce = 15;
-    [SerializeField] private Transform _attackForward, _attackUp, _attackDown;
+    [SerializeField] private Transform _attackForward, _attackUp, _attackDown, _parcy;
+
+    //Retroceso Ataque
+    private float mass = 3.0f; // Define the character mass
+    private Vector3 impact = Vector3.zero;
+    private Transform characterTransform; // Reference to the character's
+    [SerializeField] private float slideForce = 8.0f;
+    [SerializeField] private float slideForceAir = 15.0f;
+    public float movementSpeed = 5.0f;
+    [SerializeField] private bool _cantMove = false;
+    [SerializeField] private float _attackCooldown = 0.3f;
+
 
     //Dash
     public float dashDistance = 10f;
@@ -58,6 +69,7 @@ public class Player : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _anim = GetComponentInChildren<Animator>();
         _camera = Camera.main.transform;
+        characterTransform = transform;
     }
 
     void Update()
@@ -66,15 +78,16 @@ public class Player : MonoBehaviour
         //_vertical = Input.GetAxisRaw("Vertical");
 
         //Movimiento
-        Movimiento();
-        
-        //Salto
-        Salto();
+        if(_cantMove == false)
+        {
+            Movimiento();
+            Salto();
+        }
         _anim.SetBool("isJumping",!_isGrounded);
 
 
         //Ataque
-        if (_isGrounded == true && Input.GetButtonDown("Fire1") && _lookUp == false)
+        if (Input.GetButtonDown("Fire1") && _lookUp == false)
         {
             PerformAttack(_damage);
             _anim.SetBool("isAttacking",true);
@@ -163,6 +176,13 @@ public class Player : MonoBehaviour
         {
             _anim.SetBool("isDash",false);
         }
+
+        //Retroceso
+        if (impact.magnitude > 0.2f)
+        {
+            _controller.Move(impact * Time.deltaTime * movementSpeed);
+            impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+        }
         
         //Parry
         if (Input.GetButtonDown("Fire2") && canParry)
@@ -244,6 +264,14 @@ public class Player : MonoBehaviour
             enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
         }
 
+        if (enemies.Length > 0)
+        {
+            StartCoroutine(AttackCooldown());
+            Vector3 slideDirection = -transform.right;
+            AddImpact(slideDirection, slideForce);
+            Debug.Log("Desplazado");
+        }
+
         /*Collider[] projectiles = Physics.OverlapSphere(transform.position, attackRadius, bulletLayer);
         foreach (Collider projectile in projectiles)
         {
@@ -279,7 +307,14 @@ public class Player : MonoBehaviour
         {
             enemy.GetComponent<Enemy>().TakeDamage(_damage);
         }
-        _controller.Move(Vector3.up * downwardAttackForce * Time.deltaTime);
+        if (enemies.Length > 0)
+        {
+            StartCoroutine(AttackCooldown());
+            Vector3 slideDirection = -transform.up;
+            AddImpact(slideDirection, slideForceAir);
+            Debug.Log("Desplazado");
+        }
+
     }
 
     void PerformDash()
@@ -340,6 +375,13 @@ public class Player : MonoBehaviour
         canParry = true;
     }
 
+    IEnumerator AttackCooldown()
+    {
+        _cantMove = true;
+        yield return new WaitForSeconds(_attackCooldown);
+         _cantMove = false;
+    }
+
     void Parry()
     {
         _anim.SetBool("isParry", true);
@@ -347,7 +389,7 @@ public class Player : MonoBehaviour
         StartCoroutine(ParryCooldown());
 
         // Verificar si hay un objetivo cercano para el parry melee
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, meleeRange, meleeLayer);
+        Collider[] hitColliders = Physics.OverlapSphere(_parcy.position, meleeRange, meleeLayer);
         if (hitColliders.Length > 0)
         {
             PerformMeleeParry(hitColliders[0]);
@@ -368,8 +410,19 @@ public class Player : MonoBehaviour
             _anim.SetBool("isParry", false);
             Debug.Log("Parry fallado!");
         }
+    }
 
+    public void AddImpact(Vector3 dir, float force)
+    {
+        dir.Normalize();
+        if (dir.y < 0)
+        {
+            dir.y = -dir.y;
+        }
 
+        Vector3 adjustedDir = characterTransform.TransformDirection(dir);
+
+        impact += adjustedDir.normalized * force / mass;
     }
 
     //Gizmos
@@ -386,6 +439,10 @@ public class Player : MonoBehaviour
         
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_attackUp.position, attackRadius);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(_parcy.position, meleeRange);
+
     }
     
 }
