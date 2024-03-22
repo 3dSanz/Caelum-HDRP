@@ -5,7 +5,8 @@ using UnityEngine;
 public class Ataque : MonoBehaviour
 {
     Animator _anim;
-    private CharacterController _controller;
+    //private CharacterController _controller;
+    private Rigidbody _rigidbody;
     private Salto _jump;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float attackRadius = 1.5f;
@@ -31,9 +32,10 @@ public class Ataque : MonoBehaviour
 
     void Awake()
     {
-        _controller = GetComponent<CharacterController>();
+        //_controller = GetComponent<CharacterController>();
         _anim = GetComponentInChildren<Animator>();
         _jump = GetComponent<Salto>();
+        _rigidbody = GetComponent<Rigidbody>();
         characterTransform = transform;
     }
 
@@ -88,11 +90,11 @@ public class Ataque : MonoBehaviour
         }
 
         //Retroceso
-        if (impact.magnitude > 0.2f)
+        /*if (impact.magnitude > 0.2f)
         {
             _controller.Move(impact * Time.deltaTime * movementSpeed);
             impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
-        }
+        }*/
     }
 
     public void PerformAttack(float _inputDamage)
@@ -107,10 +109,17 @@ public class Ataque : MonoBehaviour
 
         if (enemies.Length > 0)
         {
+            foreach (Collider enemy in enemies)
+            {
+            enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
             StartCoroutine(AttackCooldown());
-            Vector3 slideDirection = -transform.right;
-            AddImpact(slideDirection, slideForce);
+            //Vector3 slideDirection = -transform.right;
+            //AddImpact(slideDirection, slideForce);
+            Vector3 enemyDirection = enemy.transform.position - transform.position;
+            enemyDirection.Normalize();
+            _rigidbody.AddForce(-enemyDirection * slideForce, ForceMode.Impulse);
             Debug.Log("Desplazado");
+            }
         }
 
         /*Collider[] projectiles = Physics.OverlapSphere(transform.position, attackRadius, bulletLayer);
@@ -151,8 +160,9 @@ public class Ataque : MonoBehaviour
         if (enemies.Length > 0)
         {
             StartCoroutine(AttackCooldown());
-            Vector3 slideDirection = -transform.up;
-            AddImpact(slideDirection, slideForceAir);
+            //Vector3 slideDirection = -transform.up;
+            //AddImpact(slideDirection, slideForceAir);
+            _rigidbody.AddForce(Vector3.up * slideForceAir, ForceMode.Impulse);
             Debug.Log("Desplazado");
         }
 
@@ -165,7 +175,7 @@ public class Ataque : MonoBehaviour
         _cantMove = false;
     }
 
-    void AddImpact(Vector3 dir, float force)
+    /*void AddImpact(Vector3 dir, float force)
     {
         dir.Normalize();
         if (dir.y < 0)
@@ -176,7 +186,7 @@ public class Ataque : MonoBehaviour
         Vector3 adjustedDir = characterTransform.TransformDirection(dir);
 
         impact += adjustedDir.normalized * force / mass;
-    }
+    }*/
 
     //Gizmos
     private void OnDrawGizmosSelected()
