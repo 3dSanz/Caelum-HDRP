@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,7 +56,7 @@ public class Salto : MonoBehaviour
         Gizmos.DrawWireSphere(_posicionSensor.position, _radioSensor);
     }
 }
-/*
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,7 +67,7 @@ public class Salto : MonoBehaviour
     private Animator _anim;
     private Ataque _attack;
     [SerializeField] private float _alturaSalto = 1;
-    private float _gravedad = -35f;
+    private Vector3 _gravedad;
     private Vector3 _jugadorGravedad;
     [SerializeField] private Transform _posicionSensor;
     [SerializeField] private float _radioSensor = 0.2f;
@@ -79,6 +79,7 @@ public class Salto : MonoBehaviour
         _anim = GetComponentInChildren<Animator>();
         _attack = GetComponent<Ataque>();
         _rigidbody = GetComponent<Rigidbody>(); // Cambio de CharacterController a Rigidbody
+        _gravedad = Physics.gravity;
     }
 
     void Update()
@@ -94,20 +95,12 @@ public class Salto : MonoBehaviour
     {
         _isGrounded = Physics.CheckSphere(_posicionSensor.position, _radioSensor, _layerSuelo);
 
-        if (_isGrounded && _jugadorGravedad.y < 0)
-        {
-            _jugadorGravedad.y = -2;
-        }
-
         if (_isGrounded && Input.GetButtonDown("Jump"))
         {
-            _jugadorGravedad.y = Mathf.Sqrt(_alturaSalto * -2 * _gravedad);
+            _rigidbody.AddForce(Vector3.up * Mathf.Sqrt(_alturaSalto * -2 * _gravedad.y), ForceMode.Impulse);
             _anim.SetBool("isJumping", true);
         }
-        _jugadorGravedad.y += _gravedad * Time.deltaTime;
 
-        // Aplicamos la gravedad al Rigidbody
-        _rigidbody.velocity = _jugadorGravedad;
     }
 
     // Gizmos
@@ -117,4 +110,3 @@ public class Salto : MonoBehaviour
         Gizmos.DrawWireSphere(_posicionSensor.position, _radioSensor);
     }
 }
-*/

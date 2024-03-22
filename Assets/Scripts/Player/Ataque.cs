@@ -40,7 +40,7 @@ public class Ataque : MonoBehaviour
     void Update()
     {
         //Ataque
-        if (Input.GetButtonDown("Fire1") && _lookUp == false)
+        if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false)
         {
             PerformAttack(_damage);
             _anim.SetBool("isAttacking",true);

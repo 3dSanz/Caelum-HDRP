@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     private Movimiento _mov;
     private Ataque _attack;
     private Salto _jump;
-    private Inputs _inputs;
     private Parry _parry;
     private Dash _dash;
 
@@ -21,7 +20,6 @@ public class PlayerController : MonoBehaviour
         _mov = GetComponent<Movimiento>();
         _attack = GetComponent<Ataque>();
         _jump = GetComponent<Salto>();
-        _inputs = GetComponent<Inputs>();
         _parry = GetComponent<Parry>();
         _dash = GetComponent<Dash>();
     }
