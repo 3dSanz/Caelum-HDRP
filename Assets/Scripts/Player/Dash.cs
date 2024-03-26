@@ -1,75 +1,193 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Dash : MonoBehaviour
 {
-    private CharacterController _controller;
-    [SerializeField] private float dashDistance = 10f;
+    /*private Rigidbody _rigidbody;
+    private Animator _anim;
+    private Salto _jump;
+    [SerializeField] private float dashSpeed = 10;
     [SerializeField] private float dashDuration = 0.5f;
-    [SerializeField] private float dashSpeed = 10f;
-    private Vector3 dashStartPos;
-    [SerializeField] private bool isDashing;
-    [SerializeField] private bool _lookDash;
-    Animator _anim;
-
+    private float dashTimer;
+    [SerializeField] private float dashCooldown;
+    [SerializeField] private bool canDash;
+    [SerializeField] private bool dashed;
+    public LayerMask obstacleLayer;
+    private Vector3 dashStartPosition;
 
     void Awake()
     {
-        _controller = GetComponent<CharacterController>();
+        _rigidbody = GetComponent<Rigidbody>();
         _anim = GetComponentInChildren<Animator>();
+        _jump = GetComponent<Salto>();
+        canDash = true;
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Horizontal"))
+        StartDash();
+    }
+
+    void StartDash()
+    {
+        if(Input.GetKeyDown(KeyCode.Z) && canDash && !dashed)
         {
-            _lookDash = true;
-        }else if(Input.GetButtonUp("Horizontal"))
-        {
-            _lookDash = false;
+            dashStartPosition = transform.position;
+            StartCoroutine(DoDash());
+            dashed = true;
+            Debug.Log("StartDash OK");
         }
 
-        if (Input.GetKeyDown(KeyCode.Z) && _lookDash == true)
+        if(_jump._isGrounded)
         {
-            PerformDash();
+            dashed = false;
+        }
+    }
+
+    IEnumerator DoDash()
+    {
+        Debug.Log("DoDash OK");
+        canDash = false;
+        _anim.SetTrigger("Dashing");
+        _rigidbody.useGravity = false;
+         if (dashTimer < dashDuration)
+        {
+            float dashProgress = dashTimer / dashDuration;
+            Vector3 dashTargetPosition = dashStartPosition + transform.forward * dashSpeed;
+            RaycastHit hit;
+            if (Physics.Raycast(dashStartPosition, transform.forward, out hit, dashSpeed, obstacleLayer))
+            {
+                    Vector3 resta = new Vector3(1,0,0);
+                    dashTargetPosition = hit.point - resta;
+            }
+            _rigidbody.MovePosition(Vector3.Lerp(dashStartPosition, dashTargetPosition, 5));
+            dashTimer += Time.deltaTime;
+            yield return new WaitForSeconds(dashDuration);
+            _rigidbody.useGravity = true;
+            yield return new WaitForSeconds(dashCooldown);
+            canDash = true;
+            Debug.Log("DoDash End");
+        }
+    }*/
+
+    public float dashDistance = 5f;
+    public float dashDuration = 0.5f;
+    public LayerMask obstacleLayer;
+    private Rigidbody rb;
+    private Vector3 dashStartPosition;
+    private Vector3 finalDashDirection;
+    private float dashTimer;
+    [SerializeField] private bool isDashing = false;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z) && !isDashing)
+        {
+            dashStartPosition = transform.position;
+
+            dashTimer = 0f;
+
+            isDashing = true;
         }
 
         if (isDashing)
         {
-            DashMovement();
-            _anim.SetBool("isDash",true);     
-        }else
-        {
-            _anim.SetBool("isDash",false);
+            float dashProgress = dashTimer / dashDuration;
+
+            Vector3 dashDirection = transform.forward;
+            if (Input.GetKey(KeyCode.A))
+            {
+                finalDashDirection = -dashDirection;
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                finalDashDirection = dashDirection;
+            }
+
+            Vector3 dashTargetPosition = dashStartPosition + finalDashDirection * dashDistance;
+
+            RaycastHit hit;
+            if (Physics.Raycast(dashStartPosition, finalDashDirection, out hit, dashDistance, obstacleLayer))
+            {
+                dashTargetPosition = hit.point;
+            }
+
+            rb.MovePosition(Vector3.Lerp(dashStartPosition, dashTargetPosition, dashProgress));
+
+            dashTimer += Time.deltaTime;
+
+            if (dashTimer >= dashDuration)
+            {
+                isDashing = false;
+            }
         }
     }
+}
 
-    void PerformDash()
+/*
+   private Rigidbody _rigidbody;
+    private Animator _anim;
+    private Salto _jump;
+    public float dashDistance = 5f;
+    public float dashDuration = 0.5f;
+    public LayerMask obstacleLayer;
+    private Vector3 dashStartPosition;
+    private float dashTimer;
+    [SerializeField] private bool canDash;
+    [SerializeField] private bool dashed;
+
+    private void Start()
     {
-        if (!isDashing)
-        {
-            dashStartPos = transform.position;
-            isDashing = true;
-        }
+        _rigidbody = GetComponent<Rigidbody>();
+        _anim = GetComponentInChildren<Animator>();
+        _jump = GetComponent<Salto>();
+        canDash = true;
     }
 
-
-    void DashMovement()
+    private void Update()
     {
-        Vector3 finalPosition = dashStartPos + transform.forward * dashDistance;
-        Vector3 dashMove = transform.forward * dashSpeed * Time.deltaTime;
-        dashMove.y = 0;
-        _controller.Move(dashMove);
-
-        if (Vector3.Distance(transform.position, dashStartPos) >= dashDistance)
+        if(Input.GetKeyDown(KeyCode.Z) && canDash && !dashed)
         {
-            isDashing = false;
+            dashStartPosition = transform.position;
+            dashTimer = 0f;
+            dashed = true;
+            IsDashing();
+        }
+
+        if(_jump._isGrounded)
+        {
+            dashed = false;
         }
     }
-}*/
 
-using System.Collections;
+    void IsDashing()
+    {
+        if (dashTimer < dashDuration)
+        {
+            float dashProgress = dashTimer / dashDuration;
+
+            Vector3 dashTargetPosition = dashStartPosition + transform.forward * dashDistance;
+
+            RaycastHit hit;
+            if (Physics.Raycast(dashStartPosition, transform.forward, out hit, dashDistance, obstacleLayer))
+            {
+                Vector3 resta = new Vector3(1,0,0);
+                dashTargetPosition = hit.point - resta;
+            }
+
+            _rigidbody.MovePosition(Vector3.Lerp(dashStartPosition, dashTargetPosition, dashProgress));
+            dashTimer += Time.deltaTime;
+        }
+    }
+*/
+
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -78,6 +196,7 @@ public class Dash : MonoBehaviour
     private Rigidbody _rigidbody; // Cambiamos a Rigidbody
     [SerializeField] private float dashDistance = 10f;
     [SerializeField] private float dashSpeed = 10f;
+    private  Movimiento _mov;
     private Vector3 dashStartPos;
     private bool isDashing;
     private bool _lookDash;
@@ -87,9 +206,10 @@ public class Dash : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>(); // Obtenemos el componente Rigidbody
         _anim = GetComponentInChildren<Animator>();
+        _mov = GetComponent<Movimiento>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetButtonDown("Horizontal"))
         {
@@ -130,11 +250,18 @@ public class Dash : MonoBehaviour
         Vector3 finalPosition = dashStartPos + transform.forward * dashDistance;
         Vector3 dashMove = transform.forward * dashSpeed * Time.deltaTime;
         dashMove.y = 0;
-        _rigidbody.MovePosition(_rigidbody.position + dashMove); // Usamos MovePosition para mover el Rigidbody
+        if(!_mov.facingRight)
+            {
+                _rigidbody.MovePosition(_rigidbody.position + dashMove); // Usamos MovePosition para mover el Rigidbody
+            } else if(_mov.facingRight)
+            {
+                 _rigidbody.MovePosition(_rigidbody.position - dashMove); // Usamos MovePosition para mover el Rigidbody
+            }
+       
 
         if (Vector3.Distance(transform.position, dashStartPos) >= dashDistance)
         {
             isDashing = false;
         }
     }
-}
+}*/

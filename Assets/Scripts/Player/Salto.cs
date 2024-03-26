@@ -66,13 +66,17 @@ public class Salto : MonoBehaviour
     private Rigidbody _rigidbody; // Cambio de CharacterController a Rigidbody
     private Animator _anim;
     private Ataque _attack;
-    [SerializeField] private float _alturaSalto = 1;
+
     private Vector3 _gravedad;
     private Vector3 _jugadorGravedad;
-    [SerializeField] private Transform _posicionSensor;
+    
+    public bool _isGrounded;
+    Collider[] _groundCollisions;
     [SerializeField] private float _radioSensor = 0.2f;
     [SerializeField] private LayerMask _layerSuelo;
-    public bool _isGrounded;
+    [SerializeField] private Transform _posicionSensor;
+    [SerializeField] private float _alturaSalto = 1;
+
 
     void Awake()
     {
@@ -82,7 +86,16 @@ public class Salto : MonoBehaviour
         _gravedad = Physics.gravity;
     }
 
-    void Update()
+    /*void Update()
+    {
+        if (_attack._cantMove == false)
+        {
+            Jump();
+        }
+        _anim.SetBool("isJumping", !_isGrounded);
+    }*/
+    
+    void FixedUpdate()
     {
         if (_attack._cantMove == false)
         {
@@ -93,14 +106,33 @@ public class Salto : MonoBehaviour
 
     void Jump()
     {
+        /*
         _isGrounded = Physics.CheckSphere(_posicionSensor.position, _radioSensor, _layerSuelo);
 
         if (_isGrounded && Input.GetButtonDown("Jump"))
         {
             _rigidbody.AddForce(Vector3.up * Mathf.Sqrt(_alturaSalto * -2 * _gravedad.y), ForceMode.Impulse);
             _anim.SetBool("isJumping", true);
+        }*/
+
+        if(_isGrounded && Input.GetAxis("Jump")>0)
+        {
+            _isGrounded = false;
+            _anim.SetBool("Grounded",_isGrounded);
+            _rigidbody.AddForce(new Vector3(0,_alturaSalto,0));
         }
 
+        _groundCollisions = Physics.OverlapSphere(_posicionSensor.position, _radioSensor, _layerSuelo);
+        
+        if(_groundCollisions.Length>0)
+        {
+            _isGrounded = true;
+        }else 
+        {
+            _isGrounded = false;
+        }
+
+        _anim.SetBool("Grounded",_isGrounded);
     }
 
     // Gizmos

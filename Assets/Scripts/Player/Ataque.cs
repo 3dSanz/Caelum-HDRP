@@ -8,6 +8,7 @@ public class Ataque : MonoBehaviour
     //private CharacterController _controller;
     private Rigidbody _rigidbody;
     private Salto _jump;
+    private  Movimiento _mov;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float attackRadius = 1.5f;
     [SerializeField] private float downwardAttackForce = 15;
@@ -29,27 +30,35 @@ public class Ataque : MonoBehaviour
     //Dano ataque normal
     [SerializeField] private float _damage = 1f;
 
+    private float _horizontal;
+    [SerializeField] private float _timeMelee;
+    private float _timeSiguienteMelee;
+
 
     void Awake()
     {
         //_controller = GetComponent<CharacterController>();
         _anim = GetComponentInChildren<Animator>();
         _jump = GetComponent<Salto>();
+        _mov = GetComponent<Movimiento>();
         _rigidbody = GetComponent<Rigidbody>();
         characterTransform = transform;
     }
 
     void Update()
     {
+        _horizontal = Input.GetAxisRaw("Horizontal");
         //Ataque
-        if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false)
+        if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false && Time.time >= _timeSiguienteMelee)
         {
             PerformAttack(_damage);
-            _anim.SetBool("isAttacking",true);
+            //_anim.SetBool("isAttacking",true);
+            _anim.SetTrigger("isAttack");
             Debug.Log("Ataque Normal");
-        }else{
+            _timeSiguienteMelee = Time.time + _timeMelee;
+        }/*else{
             _anim.SetBool("isAttacking",false);
-        }
+        }*/
 
         //Ataque hacia arriba
         if (Input.GetKeyDown(KeyCode.W))
@@ -84,10 +93,10 @@ public class Ataque : MonoBehaviour
             DownAttack(_damage);
             //_anim.SetBool("downAttack", true);
             Debug.Log("Ataque Hacia Abajo en salto");
-        }else
+        }/*else
         {
-            //_anim.SetBool("downAttack", false);
-        }
+            _anim.SetBool("downAttack", false);
+        }*/
 
         //Retroceso
         /*if (impact.magnitude > 0.2f)
@@ -101,13 +110,32 @@ public class Ataque : MonoBehaviour
     {
 
        Collider[] enemies = Physics.OverlapSphere(_attackForward.position, attackRadius, enemyLayer);
+       
 
         foreach (Collider enemy in enemies)
         {
             enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
         }
 
-        if (enemies.Length > 0)
+        if(enemies.Length > 0)
+        {
+            Vector3 _direccion = new Vector3 (1,0,0);
+            if(!_mov.facingRight)
+            {
+                StartCoroutine(AttackCooldown());
+                _rigidbody.AddForce(_direccion * slideForce, ForceMode.Impulse);
+                Debug.Log("Desplazado lateral");
+
+            } else if(_mov.facingRight)
+            {
+                StartCoroutine(AttackCooldown());
+                _rigidbody.AddForce(-_direccion * slideForce, ForceMode.Impulse);
+                Debug.Log("Desplazado lateral");
+            }
+        }
+            
+
+        /*if (enemies.Length > 0)
         {
             foreach (Collider enemy in enemies)
             {
@@ -120,7 +148,7 @@ public class Ataque : MonoBehaviour
             _rigidbody.AddForce(-enemyDirection * slideForce, ForceMode.Impulse);
             Debug.Log("Desplazado");
             }
-        }
+        }*/
 
         /*Collider[] projectiles = Physics.OverlapSphere(transform.position, attackRadius, bulletLayer);
         foreach (Collider projectile in projectiles)
@@ -159,11 +187,10 @@ public class Ataque : MonoBehaviour
         }
         if (enemies.Length > 0)
         {
-            StartCoroutine(AttackCooldown());
             //Vector3 slideDirection = -transform.up;
             //AddImpact(slideDirection, slideForceAir);
             _rigidbody.AddForce(Vector3.up * slideForceAir, ForceMode.Impulse);
-            Debug.Log("Desplazado");
+            Debug.Log("Desplazado arriba");
         }
 
     }
