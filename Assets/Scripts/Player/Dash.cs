@@ -75,25 +75,31 @@ public class Dash : MonoBehaviour
     public float dashDuration = 0.5f;
     public LayerMask obstacleLayer;
     private Rigidbody rb;
+    private Animator _anim;
     private Vector3 dashStartPosition;
     private Vector3 finalDashDirection;
     private float dashTimer;
+    private bool _directionPressed;
     [SerializeField] private bool isDashing = false;
+    private float _horizontal;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        _anim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && !isDashing)
+        _horizontal = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKeyDown(KeyCode.Z) && !isDashing && _horizontal != 0)
         {
             dashStartPosition = transform.position;
 
             dashTimer = 0f;
 
             isDashing = true;
+            _anim.SetTrigger("isDash");
         }
 
         if (isDashing)
@@ -104,28 +110,36 @@ public class Dash : MonoBehaviour
             if (Input.GetKey(KeyCode.A))
             {
                 finalDashDirection = -dashDirection;
+                _directionPressed = true;
             }
             else if (Input.GetKey(KeyCode.D))
             {
                 finalDashDirection = dashDirection;
+                _directionPressed = true;
+            }else{
+                _directionPressed = false;
             }
 
-            Vector3 dashTargetPosition = dashStartPosition + finalDashDirection * dashDistance;
-
-            RaycastHit hit;
-            if (Physics.Raycast(dashStartPosition, finalDashDirection, out hit, dashDistance, obstacleLayer))
+            if(_directionPressed == true)
             {
-                dashTargetPosition = hit.point;
-            }
+                Vector3 dashTargetPosition = dashStartPosition + finalDashDirection * dashDistance;
 
-            rb.MovePosition(Vector3.Lerp(dashStartPosition, dashTargetPosition, dashProgress));
+                RaycastHit hit;
+                if (Physics.Raycast(dashStartPosition, finalDashDirection, out hit, dashDistance, obstacleLayer))
+                {
+                    Vector3 resta = new Vector3(1,0,0);
+                    dashTargetPosition = hit.point - resta;
+                }
 
-            dashTimer += Time.deltaTime;
+                rb.MovePosition(Vector3.Lerp(dashStartPosition, dashTargetPosition, dashProgress));
 
-            if (dashTimer >= dashDuration)
-            {
-                isDashing = false;
-            }
+                dashTimer += Time.deltaTime;
+
+                if (dashTimer >= dashDuration)
+                {
+                    isDashing = false;
+                }
+            }  
         }
     }
 }

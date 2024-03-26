@@ -72,11 +72,8 @@ public class Ataque : MonoBehaviour
         if (_lookUp == true && Input.GetButtonDown("Fire1"))
         {
             PerformUpAttack(_damage);
-            //_anim.SetBool("upAttack", true);
+            _anim.SetTrigger("upAttack");
             Debug.Log("Ataque hacia arriba");
-        }else
-        {
-            //_anim.SetBool("upAttack", false);
         }
 
         //Ataque hacia abajo aire
@@ -91,7 +88,7 @@ public class Ataque : MonoBehaviour
         if (_jump._isGrounded == false && _lookDown == true && Input.GetButtonDown("Fire1"))
         {
             DownAttack(_damage);
-            //_anim.SetBool("downAttack", true);
+            _anim.SetTrigger("isDownAttack");
             Debug.Log("Ataque Hacia Abajo en salto");
         }/*else
         {

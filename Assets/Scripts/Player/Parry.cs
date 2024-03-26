@@ -31,8 +31,6 @@ public class Parry : MonoBehaviour
         if (Input.GetButtonDown("Fire2") && canParry)
         {
             DoParry();
-        }else{
-            _anim.SetBool("isParry", false);
         }
     }
 
@@ -45,7 +43,7 @@ public class Parry : MonoBehaviour
 
     void DoParry()
     {
-        _anim.SetBool("isParry", true);
+        _anim.SetTrigger("isParry");
         Debug.Log("Parrendo");
         StartCoroutine(ParryCooldown());
 
@@ -62,11 +60,10 @@ public class Parry : MonoBehaviour
         if (enemy != null) //enemy._isAttacking == true
         {  
             _attack.PerformAttack(_damageParry);
-            _anim.SetTrigger("Parry_Attack");
+            _anim.SetTrigger("Perform_Parry");
             Debug.Log("Parry acertado!");
         }else
         {
-            _anim.SetBool("isParry", false);
             Debug.Log("Parry fallado!");
         }
     }
