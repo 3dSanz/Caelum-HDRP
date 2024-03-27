@@ -29,6 +29,19 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private float _currentHealth;
 
+    [SerializeField] private Transform _gunPosition;
+    [SerializeField] private int _bulletType = 0;
+    [SerializeField] private float spawnInterval = 2f;
+
+    [SerializeField] private float _timeDisparo = 2f;
+    private float _timeSiguienteDisparo;
+
+    [SerializeField] private float damage = 1f;
+    [SerializeField] private float _timeGolpe = 2f;
+    private float _timeSiguienteGolpe;
+    [SerializeField] private float attackRadius = 1.2f;
+    [SerializeField] private LayerMask playerLayer;
+
      void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -55,6 +68,13 @@ public class Enemy : MonoBehaviour
             Attack();
             break;
         }
+
+        if(Time.time >= _timeSiguienteGolpe)
+        {
+            EnemyCollisionAttack(damage);
+            _timeSiguienteGolpe = Time.time + _timeGolpe;
+        }
+        
     }
 
     public void TakeDamage(float amount)
@@ -64,10 +84,6 @@ public class Enemy : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Die();
-        }
-        if (_currentHealth <= 0)
-        {
-            Invoke(nameof(Die), 0.5f);
         }
     }
 
@@ -97,11 +113,11 @@ public class Enemy : MonoBehaviour
             _currentState = State.Patroling;
         }
 
-        if(EnRango(_attackRange) == true)
+        if(EnRango(_attackRange) == true && Time.time >= _timeSiguienteDisparo)
         {
             _isAttacking = true;
+            _timeSiguienteDisparo = Time.time + _timeDisparo;
             _currentState = State.Attacking;
-
         }
     }
 
@@ -110,6 +126,8 @@ public class Enemy : MonoBehaviour
         Debug.Log("PUM!");
         _isAttacking = false;
         _currentState = State.Chasing;
+
+        InvokeRepeating("SpawnBullets", 0f, spawnInterval);
     }
 
     void PuntoAleatorio()
@@ -128,6 +146,38 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void SpawnBullets()
+    {
+        GameObject bullet = PoolManager.Instance.GetPooledObjects(_bulletType, _gunPosition.position, _gunPosition.rotation);
+
+        if(bullet != null)
+        {
+            bullet.SetActive(true);
+        }else
+        {
+            Debug.LogError("Pool demasiado pequeno");
+        }
+    }
+    
+    /*void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Player" && Time.time >= _timeSiguienteGolpe)
+        {
+            other.GetComponentInParent<Health>().TakeDamage(damage);
+            _timeSiguienteGolpe = Time.time + _timeGolpe;
+        }
+    }*/
+
+    public void EnemyCollisionAttack(float dmg)
+    {
+       Collider[] players = Physics.OverlapSphere(transform.position, attackRadius, playerLayer);
+        foreach (Collider player in players)
+        {
+            player.GetComponent<Health>().TakeDamage(dmg);
+        }
+    }
+
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -142,5 +192,8 @@ public class Enemy : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _detectionRange);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 }

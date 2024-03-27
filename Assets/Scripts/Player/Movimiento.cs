@@ -64,7 +64,7 @@ public class Movimiento : MonoBehaviour
     private Animator _anim;
     private Ataque _attack;
     [SerializeField] private float _vel = 9;
-    [SerializeField] private float turnSmoothTime = 0.1f;
+    //[SerializeField] private float turnSmoothTime = 0.1f;
     private float _horizontal;
     private float turnSmoothVelocity;
 

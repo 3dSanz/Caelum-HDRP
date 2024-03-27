@@ -11,18 +11,18 @@ public class Ataque : MonoBehaviour
     private  Movimiento _mov;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float attackRadius = 1.5f;
-    [SerializeField] private float downwardAttackForce = 15;
+    //[SerializeField] private float downwardAttackForce = 15;
     [SerializeField] private Transform _attackForward, _attackUp, _attackDown;
     [SerializeField] private bool _lookUp;
     [SerializeField] private bool _lookDown;
 
     //Retroceso Ataque
-    private float mass = 3.0f; // Define the character mass
+    //private float mass = 3.0f; // Define the character mass
     private Vector3 impact = Vector3.zero;
     private Transform characterTransform; // Reference to the character's
     [SerializeField] private float slideForce = 8.0f;
     [SerializeField] private float slideForceAir = 15.0f;
-    [SerializeField] private float movementSpeed = 5.0f;
+    //[SerializeField] private float movementSpeed = 5.0f;
     public bool _cantMove = false;
     [SerializeField] private float _attackCooldown = 0.3f;
 
@@ -33,6 +33,12 @@ public class Ataque : MonoBehaviour
     private float _horizontal;
     [SerializeField] private float _timeMelee;
     private float _timeSiguienteMelee;
+
+    //GameObjects
+    [SerializeField] private GameObject _ataqueArriba;
+    [SerializeField] private GameObject _ataqueCentro;
+    [SerializeField] private GameObject _ataqueAbajo;
+    
 
 
     void Awake()
@@ -49,16 +55,15 @@ public class Ataque : MonoBehaviour
     {
         _horizontal = Input.GetAxisRaw("Horizontal");
         //Ataque
-        if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false && Time.time >= _timeSiguienteMelee)
+        if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false /*&& Time.time >= _timeSiguienteMelee*/)
         {
             PerformAttack(_damage);
             //_anim.SetBool("isAttacking",true);
             _anim.SetTrigger("isAttack");
             Debug.Log("Ataque Normal");
-            _timeSiguienteMelee = Time.time + _timeMelee;
-        }/*else{
-            _anim.SetBool("isAttacking",false);
-        }*/
+            _ataqueCentro.SetActive(true);
+            //_timeSiguienteMelee = Time.time + _timeMelee;
+        }
 
         //Ataque hacia arriba
         if (Input.GetKeyDown(KeyCode.W))
@@ -69,11 +74,13 @@ public class Ataque : MonoBehaviour
             _lookUp = false;
         }
 
-        if (_lookUp == true && Input.GetButtonDown("Fire1"))
+        if (_lookUp == true && Input.GetButtonDown("Fire1") /*&& Time.time >= _timeSiguienteMelee*/)
         {
             PerformUpAttack(_damage);
             _anim.SetTrigger("upAttack");
-            Debug.Log("Ataque hacia arriba");
+            _ataqueArriba.SetActive(true);
+            Debug.Log("Ataque hacia arriba"); 
+            //_timeSiguienteMelee = Time.time + _timeMelee;
         }
 
         //Ataque hacia abajo aire
@@ -85,15 +92,22 @@ public class Ataque : MonoBehaviour
            _lookDown = false;
         }
 
-        if (_jump._isGrounded == false && _lookDown == true && Input.GetButtonDown("Fire1"))
+        if (_jump._isGrounded == false && _lookDown == true && Input.GetButtonDown("Fire1") /*&& Time.time >= _timeSiguienteMelee*/)
         {
             DownAttack(_damage);
             _anim.SetTrigger("isDownAttack");
             Debug.Log("Ataque Hacia Abajo en salto");
-        }/*else
+            _ataqueAbajo.SetActive(true);
+            //_timeSiguienteMelee = Time.time + _timeMelee;
+        }
+
+        //Controla la desactivacion del ataque a melee
+        if(Time.time >= _timeSiguienteMelee)
         {
-            _anim.SetBool("downAttack", false);
-        }*/
+            _ataqueArriba.SetActive(false);
+            _ataqueCentro.SetActive(false);
+            _ataqueAbajo.SetActive(false);
+        }
 
         //Retroceso
         /*if (impact.magnitude > 0.2f)
@@ -103,7 +117,7 @@ public class Ataque : MonoBehaviour
         }*/
     }
 
-    public void PerformAttack(float _inputDamage)
+    public void PerformAttack(float dmg)
     {
 
        Collider[] enemies = Physics.OverlapSphere(_attackForward.position, attackRadius, enemyLayer);
@@ -111,7 +125,7 @@ public class Ataque : MonoBehaviour
 
         foreach (Collider enemy in enemies)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
+            enemy.GetComponent<Enemy>().TakeDamage(dmg);
         }
 
         if(enemies.Length > 0)
@@ -155,14 +169,13 @@ public class Ataque : MonoBehaviour
         }*/
     }
 
-    void PerformUpAttack(float _inputDamage)
+    void PerformUpAttack(float dmg)
     {
-
        Collider[] enemies = Physics.OverlapSphere(_attackUp.position, attackRadius, enemyLayer);
 
         foreach (Collider enemy in enemies)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
+            enemy.GetComponent<Enemy>().TakeDamage(dmg);
         }
 
         /*Collider[] projectiles = Physics.OverlapSphere(transform.position, attackRadius, bulletLayer);
@@ -173,14 +186,14 @@ public class Ataque : MonoBehaviour
         }*/
     }
 
-    void DownAttack(float _inputDamage)
+    void DownAttack(float dmg)
     {
         //animator.SetTrigger("DownwardAttack"); // Activa la animacion de el ataque hacia abajo
         Collider[] enemies = Physics.OverlapSphere(_attackDown.position, attackRadius, enemyLayer);
 
         foreach (Collider enemy in enemies)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(_inputDamage);
+            enemy.GetComponent<Enemy>().TakeDamage(dmg);
         }
         if (enemies.Length > 0)
         {
