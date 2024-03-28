@@ -107,6 +107,7 @@ public class Ataque : MonoBehaviour
             _ataqueArriba.SetActive(false);
             _ataqueCentro.SetActive(false);
             _ataqueAbajo.SetActive(false);
+            _timeSiguienteMelee = Time.time + _timeMelee;
         }
 
         //Retroceso
