@@ -1,0 +1,32 @@
+fileFormatVersion: 2
+guid: 47356f6861132714a9ac656558b68290
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 9801397f829a1ed42984340315cbf362, type: 3}
+  iesMetaData:
+    FileFormatVersion: LM-63-2002
+    IESPhotometricType: Type C
+    IESMaximumIntensity: 14635.157
+    IESMaximumIntensityUnit: Candelas
+    Manufacturer: Efficient Lighting Systems, Brunswick. VIC. 3056.
+    LuminaireCatalogNumber: DT106.XTM10.N.94.61
+    LuminaireDescription: "Efficient Lighting Systems LED Display Track Light. Product
+      ID: DT106.XTM10.N.94.61. Cylindrical cast aluminium body and rectangular gear
+      housing, 150 x 165 x 140 mm deep. Recessed glass lens. Luminous opening of
+      92 mm diameter. Specular multifaceted \uFFFD15 degree\uFFFD reflector about
+      LED. One \"Xicato XTM19954030CCA 0D\" LED centred 60 mm above L/O. One Harvard
+      Technology CL40-1050S2D 220-240V 50/60Hz electronic driver set to \uFFFD1050mA\uFFFD"
+    LampCatalogNumber: 
+    LampDescription: 
+    PrefabLightType: 0
+    SpotAngle: 120
+    iesSize: 128
+    ApplyLightAttenuation: 1
+    UseIESMaximumIntensity: 1
+    CookieCompression: 2
+    LightAimAxisRotation: -90
