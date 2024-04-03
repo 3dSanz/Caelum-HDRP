@@ -9,6 +9,7 @@ public class Ataque : MonoBehaviour
     private Rigidbody _rigidbody;
     private Salto _jump;
     private  Movimiento _mov;
+    private Health _hp;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float attackRadius = 1.5f;
     //[SerializeField] private float downwardAttackForce = 15;
@@ -47,75 +48,79 @@ public class Ataque : MonoBehaviour
         _anim = GetComponentInChildren<Animator>();
         _jump = GetComponent<Salto>();
         _mov = GetComponent<Movimiento>();
+        _hp = GetComponentInChildren<Health>();
         _rigidbody = GetComponent<Rigidbody>();
         characterTransform = transform;
     }
 
     void Update()
     {
-        _horizontal = Input.GetAxisRaw("Horizontal");
-        //Ataque
-        if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false /*&& Time.time >= _timeSiguienteMelee*/)
+        if(_hp._isAlive == true)
         {
-            PerformAttack(_damage);
-            //_anim.SetBool("isAttacking",true);
-            _anim.SetTrigger("isAttack");
-            Debug.Log("Ataque Normal");
-            _ataqueCentro.SetActive(true);
-            //_timeSiguienteMelee = Time.time + _timeMelee;
-        }
+            _horizontal = Input.GetAxisRaw("Horizontal");
+            //Ataque
+            if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false /*&& Time.time >= _timeSiguienteMelee*/)
+            {
+                PerformAttack(_damage);
+                //_anim.SetBool("isAttacking",true);
+                _anim.SetTrigger("isAttack");
+                Debug.Log("Ataque Normal");
+                _ataqueCentro.SetActive(true);
+                //_timeSiguienteMelee = Time.time + _timeMelee;
+            }
 
-        //Ataque hacia arriba
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            _lookUp = true;
-        }else if(Input.GetKeyUp(KeyCode.W))
-        {
-            _lookUp = false;
-        }
+            //Ataque hacia arriba
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                _lookUp = true;
+            }else if(Input.GetKeyUp(KeyCode.W))
+            {
+                _lookUp = false;
+            }
 
-        if (_lookUp == true && Input.GetButtonDown("Fire1") /*&& Time.time >= _timeSiguienteMelee*/)
-        {
-            PerformUpAttack(_damage);
-            _anim.SetTrigger("upAttack");
-            _ataqueArriba.SetActive(true);
-            Debug.Log("Ataque hacia arriba"); 
-            //_timeSiguienteMelee = Time.time + _timeMelee;
-        }
+            if (_lookUp == true && Input.GetButtonDown("Fire1") /*&& Time.time >= _timeSiguienteMelee*/)
+            {
+                PerformUpAttack(_damage);
+                _anim.SetTrigger("upAttack");
+                _ataqueArriba.SetActive(true);
+                Debug.Log("Ataque hacia arriba"); 
+                //_timeSiguienteMelee = Time.time + _timeMelee;
+            }
 
-        //Ataque hacia abajo aire
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            _lookDown = true;
-        }else if(Input.GetKeyUp(KeyCode.S))
-        {
-           _lookDown = false;
-        }
+            //Ataque hacia abajo aire
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                _lookDown = true;
+            }else if(Input.GetKeyUp(KeyCode.S))
+            {
+            _lookDown = false;
+            }
 
-        if (_jump._isGrounded == false && _lookDown == true && Input.GetButtonDown("Fire1") /*&& Time.time >= _timeSiguienteMelee*/)
-        {
-            DownAttack(_damage);
-            _anim.SetTrigger("isDownAttack");
-            Debug.Log("Ataque Hacia Abajo en salto");
-            _ataqueAbajo.SetActive(true);
-            //_timeSiguienteMelee = Time.time + _timeMelee;
-        }
+            if (_jump._isGrounded == false && _lookDown == true && Input.GetButtonDown("Fire1") /*&& Time.time >= _timeSiguienteMelee*/)
+            {
+                DownAttack(_damage);
+                _anim.SetTrigger("isDownAttack");
+                Debug.Log("Ataque Hacia Abajo en salto");
+                _ataqueAbajo.SetActive(true);
+                //_timeSiguienteMelee = Time.time + _timeMelee;
+            }
 
-        //Controla la desactivacion del ataque a melee
-        if(Time.time >= _timeSiguienteMelee)
-        {
-            _ataqueArriba.SetActive(false);
-            _ataqueCentro.SetActive(false);
-            _ataqueAbajo.SetActive(false);
-            _timeSiguienteMelee = Time.time + _timeMelee;
-        }
+            //Controla la desactivacion del ataque a melee
+            if(Time.time >= _timeSiguienteMelee)
+            {
+                _ataqueArriba.SetActive(false);
+                _ataqueCentro.SetActive(false);
+                _ataqueAbajo.SetActive(false);
+                _timeSiguienteMelee = Time.time + _timeMelee;
+            }
 
-        //Retroceso
-        /*if (impact.magnitude > 0.2f)
-        {
-            _controller.Move(impact * Time.deltaTime * movementSpeed);
-            impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
-        }*/
+            //Retroceso
+            /*if (impact.magnitude > 0.2f)
+            {
+            _   controller.Move(impact * Time.deltaTime * movementSpeed);
+                impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+            }*/
+        }
     }
 
     public void PerformAttack(float dmg)

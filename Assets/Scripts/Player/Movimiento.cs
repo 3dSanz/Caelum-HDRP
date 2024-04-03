@@ -63,6 +63,7 @@ public class Movimiento : MonoBehaviour
     private Transform _camera;
     private Animator _anim;
     private Ataque _attack;
+    private Health _hp;
     [SerializeField] private float _vel = 9;
     //[SerializeField] private float turnSmoothTime = 0.1f;
     private float _horizontal;
@@ -76,27 +77,32 @@ public class Movimiento : MonoBehaviour
         _anim = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>(); // Cambio de CharacterController a Rigidbody
         _attack = GetComponent<Ataque>();
+        _hp = GetComponentInChildren<Health>();
         facingRight = true;
     }
 
     void FixedUpdate()
     {
-        
-        if (_attack._cantMove == false)
+        if(_hp._isAlive == true)
         {
-            _horizontal = Input.GetAxisRaw("Horizontal");
-            _anim.SetFloat("Speed",Mathf.Abs(_horizontal));
-            _rigidbody.velocity = new Vector3(_horizontal * _vel, _rigidbody.velocity.y, 0);
+            if (_attack._cantMove == false)
+            {
+                _horizontal = Input.GetAxisRaw("Horizontal");
+                _anim.SetFloat("Speed",Mathf.Abs(_horizontal));
+                _rigidbody.velocity = new Vector3(_horizontal * _vel, _rigidbody.velocity.y, 0);
 
-            if(_horizontal>0 && !facingRight)
-            {
+                if(_horizontal>0 && !facingRight)
+                {
                 Flip();
-            } else if(_horizontal<0 && facingRight)
-            {
-                Flip();
-            }
+                } else if(_horizontal<0 && facingRight)
+                {
+                    Flip();
+                }
             //Movement();
+            }
         }
+        
+        
     }
 
     void Flip()

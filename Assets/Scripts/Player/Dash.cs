@@ -76,6 +76,7 @@ public class Dash : MonoBehaviour
     public LayerMask obstacleLayer;
     private Rigidbody rb;
     private Animator _anim;
+    private Health _hp;
     private Vector3 dashStartPosition;
     private Vector3 finalDashDirection;
     private float dashTimer;
@@ -87,60 +88,65 @@ public class Dash : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         _anim = GetComponentInChildren<Animator>();
+        _hp = GetComponentInChildren<Health>();
     }
 
     private void Update()
     {
-        _horizontal = Input.GetAxisRaw("Horizontal");
-        if (Input.GetKeyDown(KeyCode.Z) && !isDashing && _horizontal != 0)
+        if(_hp._isAlive == true)
         {
-            dashStartPosition = transform.position;
-
-            dashTimer = 0f;
-
-            isDashing = true;
-            _anim.SetTrigger("isDash");
-        }
-
-        if (isDashing)
-        {
-            float dashProgress = dashTimer / dashDuration;
-
-            Vector3 dashDirection = transform.forward;
-            if (Input.GetKey(KeyCode.A))
+            _horizontal = Input.GetAxisRaw("Horizontal");
+            if (Input.GetKeyDown(KeyCode.Z) && !isDashing && _horizontal != 0)
             {
-                finalDashDirection = -dashDirection;
-                _directionPressed = true;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                finalDashDirection = dashDirection;
-                _directionPressed = true;
-            }else{
-                _directionPressed = false;
+                dashStartPosition = transform.position;
+
+                dashTimer = 0f;
+
+                isDashing = true;
+                _anim.SetTrigger("isDash");
             }
 
-            if(_directionPressed == true)
+            if (isDashing)
             {
-                Vector3 dashTargetPosition = dashStartPosition + finalDashDirection * dashDistance;
+                float dashProgress = dashTimer / dashDuration;
 
-                RaycastHit hit;
-                if (Physics.Raycast(dashStartPosition, finalDashDirection, out hit, dashDistance, obstacleLayer))
+                Vector3 dashDirection = transform.forward;
+                if (Input.GetKey(KeyCode.A))
                 {
-                    Vector3 resta = new Vector3(1,0,0);
-                    dashTargetPosition = hit.point - resta;
+                    finalDashDirection = -dashDirection;
+                    _directionPressed = true;
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    finalDashDirection = dashDirection;
+                    _directionPressed = true;
+                }else{
+                    _directionPressed = false;
                 }
 
-                rb.MovePosition(Vector3.Lerp(dashStartPosition, dashTargetPosition, dashProgress));
-
-                dashTimer += Time.deltaTime;
-
-                if (dashTimer >= dashDuration)
+                if(_directionPressed == true)
                 {
-                    isDashing = false;
-                }
-            }  
+                    Vector3 dashTargetPosition = dashStartPosition + finalDashDirection * dashDistance;
+
+                    RaycastHit hit;
+                    if (Physics.Raycast(dashStartPosition, finalDashDirection, out hit, dashDistance, obstacleLayer))
+                    {
+                        Vector3 resta = new Vector3(1,0,0);
+                        dashTargetPosition = hit.point - resta;
+                    }
+
+                    rb.MovePosition(Vector3.Lerp(dashStartPosition, dashTargetPosition, dashProgress));
+
+                    dashTimer += Time.deltaTime;
+
+                    if (dashTimer >= dashDuration)
+                    {
+                        isDashing = false;
+                    }
+                }  
+            }
         }
+        
     }
 }
 

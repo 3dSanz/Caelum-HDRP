@@ -6,6 +6,7 @@ public class Parry : MonoBehaviour
 {
     Ataque _attack;
     Animator _anim;
+    private Health _hp;
 
     [SerializeField] private Transform _parcy;
     
@@ -23,14 +24,18 @@ public class Parry : MonoBehaviour
     {
         _attack = GetComponent<Ataque>();
         _anim = GetComponentInChildren<Animator>();
+        _hp = GetComponentInChildren<Health>();
     }
 
     void Update()
     {
-        //Parry
-        if (Input.GetButtonDown("Fire2") && canParry)
+        if(_hp._isAlive == true)
         {
-            DoParry();
+            //Parry
+            if (Input.GetButtonDown("Fire2") && canParry)
+            {
+                DoParry();
+            }
         }
     }
 

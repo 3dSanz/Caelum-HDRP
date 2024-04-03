@@ -66,6 +66,7 @@ public class Salto : MonoBehaviour
     private Rigidbody _rigidbody; // Cambio de CharacterController a Rigidbody
     private Animator _anim;
     private Ataque _attack;
+    private Health _hp;
 
     private Vector3 _gravedad;
     private Vector3 _jugadorGravedad;
@@ -82,6 +83,7 @@ public class Salto : MonoBehaviour
     {
         _anim = GetComponentInChildren<Animator>();
         _attack = GetComponent<Ataque>();
+        _hp = GetComponentInChildren<Health>();
         _rigidbody = GetComponent<Rigidbody>(); // Cambio de CharacterController a Rigidbody
         _gravedad = Physics.gravity;
     }
@@ -97,11 +99,14 @@ public class Salto : MonoBehaviour
     
     void FixedUpdate()
     {
-        if (_attack._cantMove == false)
+        if(_hp._isAlive == true)
         {
-            Jump();
+            if (_attack._cantMove == false)
+            {
+                Jump();
+            }
+            _anim.SetBool("isJumping", !_isGrounded);
         }
-        _anim.SetBool("isJumping", !_isGrounded);
     }
 
     void Jump()
