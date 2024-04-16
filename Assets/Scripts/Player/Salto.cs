@@ -124,7 +124,8 @@ public class Salto : MonoBehaviour
         {
             _isGrounded = false;
             _anim.SetBool("Grounded",_isGrounded);
-            _rigidbody.AddForce(new Vector3(0,_alturaSalto,0));
+            //_rigidbody.AddForce(new Vector3(0,_alturaSalto,0));
+            _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(_alturaSalto * -2 * Physics.gravity.y),0), ForceMode.Impulse);
         }
 
         _groundCollisions = Physics.OverlapSphere(_posicionSensor.position, _radioSensor, _layerSuelo);

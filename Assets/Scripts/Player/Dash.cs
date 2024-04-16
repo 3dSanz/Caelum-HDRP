@@ -108,17 +108,21 @@ public class Dash : MonoBehaviour
 
             if (isDashing)
             {
+                rb.useGravity = false;
                 float dashProgress = dashTimer / dashDuration;
 
-                Vector3 dashDirection = transform.forward;
+                //Vector3 dashDirection = transform.forward;
+                int _dashDirection = 0;
                 if (Input.GetKey(KeyCode.A))
                 {
-                    finalDashDirection = -dashDirection;
+                    //finalDashDirection = -dashDirection;
+                    _dashDirection = -1;
                     _directionPressed = true;
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
-                    finalDashDirection = dashDirection;
+                    //finalDashDirection = dashDirection;
+                    _dashDirection = 1;
                     _directionPressed = true;
                 }else{
                     _directionPressed = false;
@@ -126,22 +130,23 @@ public class Dash : MonoBehaviour
 
                 if(_directionPressed == true)
                 {
-                    Vector3 dashTargetPosition = dashStartPosition + finalDashDirection * dashDistance;
+                    /*Vector3 dashTargetPosition = dashStartPosition + finalDashDirection * dashDistance;
 
                     RaycastHit hit;
                     if (Physics.Raycast(dashStartPosition, finalDashDirection, out hit, dashDistance, obstacleLayer))
                     {
                         Vector3 resta = new Vector3(1,0,0);
                         dashTargetPosition = hit.point - resta;
-                    }
+                    }*/
 
-                    rb.MovePosition(Vector3.Lerp(dashStartPosition, dashTargetPosition, dashProgress));
+                    rb.AddForce(/*Vector3.Lerp(dashStartPosition, dashTargetPosition, dashProgress)*/new Vector3(_dashDirection,0,0) * dashDistance, ForceMode.Impulse);
 
                     dashTimer += Time.deltaTime;
 
                     if (dashTimer >= dashDuration)
                     {
                         isDashing = false;
+                        rb.useGravity = true;
                     }
                 }  
             }

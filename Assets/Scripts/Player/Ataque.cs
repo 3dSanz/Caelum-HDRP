@@ -140,13 +140,15 @@ public class Ataque : MonoBehaviour
             if(!_mov.facingRight)
             {
                 StartCoroutine(AttackCooldown());
-                _rigidbody.AddForce(_direccion * slideForce, ForceMode.Impulse);
+                //_rigidbody.AddForce(_direccion * slideForce, ForceMode.Impulse);
+                _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(slideForceAir * -2 * Physics.gravity.x),0), ForceMode.Impulse);
                 Debug.Log("Desplazado lateral");
 
             } else if(_mov.facingRight)
             {
                 StartCoroutine(AttackCooldown());
-                _rigidbody.AddForce(-_direccion * slideForce, ForceMode.Impulse);
+                //_rigidbody.AddForce(-_direccion * slideForce, ForceMode.Impulse);
+                _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(-slideForceAir * -2 * Physics.gravity.x),0), ForceMode.Impulse);
                 Debug.Log("Desplazado lateral");
             }
         }
@@ -205,7 +207,8 @@ public class Ataque : MonoBehaviour
         {
             //Vector3 slideDirection = -transform.up;
             //AddImpact(slideDirection, slideForceAir);
-            _rigidbody.AddForce(Vector3.up * slideForceAir, ForceMode.Impulse);
+            //_rigidbody.AddForce(Vector3.up * slideForceAir, ForceMode.Impulse);
+            _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(slideForceAir * -2 * Physics.gravity.y),0), ForceMode.Impulse);
             Debug.Log("Desplazado arriba");
         }
 
