@@ -283,7 +283,7 @@ Material:
     - _BlendMode: 0
     - _BlurLevelMatcap: 0
     - _BlurLevelSGM: 0
-    - _BumpScale: 0.08
+    - _BumpScale: 0.097
     - _BumpScaleMatcap: 1
     - _CameraRolling_Stabilizer: 0
     - _ClippingMatteMode: 0
@@ -378,7 +378,7 @@ Material:
     - _Is_LightColor_RimLight: 1
     - _Is_NormalMapForMatCap: 0
     - _Is_NormalMapToBase: 1
-    - _Is_NormalMapToHighColor: 0
+    - _Is_NormalMapToHighColor: 1
     - _Is_NormalMapToRimLight: 0
     - _Is_Ortho: 0
     - _Is_OutlineTex: 0
@@ -462,7 +462,7 @@ Material:
     - _StencilWriteMaskDistortionVec: 64
     - _StencilWriteMaskGBuffer: 15
     - _StencilWriteMaskMV: 41
-    - _StepOffset: 0
+    - _StepOffset: 0.052
     - _SubsurfaceMask: 1
     - _SupportDecals: 1
     - _SurfaceType: 0
