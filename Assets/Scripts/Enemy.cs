@@ -37,7 +37,9 @@ public class Enemy : MonoBehaviour
     private float _timeSiguienteGolpe;
     [SerializeField] private float attackRadius = 1.2f;
     [SerializeField] private LayerMask playerLayer;
-    private bool facingRight = true;
+    [SerializeField] private bool facingRight = false;
+
+    [SerializeField] float horizontal;
 
      void Awake()
     {
@@ -62,9 +64,11 @@ public class Enemy : MonoBehaviour
             Chase();
             break;
             case State.Attacking:
-            //Attack();
+            Attack();
             break;
         }
+
+        float horizontal = _agent.velocity.x;
 
         if(Time.time >= _timeSiguienteGolpe)
         {
@@ -72,10 +76,10 @@ public class Enemy : MonoBehaviour
             _timeSiguienteGolpe = Time.time + _timeGolpe;
         }
 
-        if(_agent.destination.x>0 && !facingRight)
+        if(horizontal > 0 && !facingRight)
         {
             Flip();
-        } else if(_agent.destination.x<0 && facingRight)
+        } else if(horizontal < 0 && facingRight)
         {
             Flip();
         }

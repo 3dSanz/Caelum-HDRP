@@ -60,12 +60,13 @@ public class Bullet : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.GetComponent<Health>().TakeDamage(damage);
+            other.GetComponentInParent<Health>().TakeDamage(damage);
             gameObject.SetActive(false);
         }
 
         if (other.gameObject.tag == "MeleeAttack" && !_reflected)
         {
+
             _reflected = true;
         }
 
