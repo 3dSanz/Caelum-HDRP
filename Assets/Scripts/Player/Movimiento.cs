@@ -71,6 +71,8 @@ public class Movimiento : MonoBehaviour
 
     public bool facingRight;
 
+    private SaveManager save;
+
     void Awake()
     {
         _camera = Camera.main.transform;
@@ -79,6 +81,12 @@ public class Movimiento : MonoBehaviour
         _attack = GetComponent<Ataque>();
         _hp = GetComponentInChildren<Health>();
         facingRight = true;
+        save = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+    }
+
+    void Start()
+    {
+        PlayerPosition();
     }
 
     void FixedUpdate()
@@ -111,6 +119,35 @@ public class Movimiento : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.z *= -1;
         transform.localScale = theScale;
+    }
+
+    void PlayerPosition()
+    {
+        transform.position = new Vector3 (save.playerPosition.x, save.playerPosition.y, save.playerPosition.z);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+            if(other.gameObject.tag == "CP1")
+            {
+                save.checkPoint = "1";
+                Debug.Log("Save!");
+                save.SaveData();
+            }
+
+            if(other.gameObject.tag == "CP2")
+            {
+                save.checkPoint = "2";
+                Debug.Log("Save!");
+                save.SaveData();
+            }
+
+            if(other.gameObject.tag == "CP3")
+            {
+                save.checkPoint = "3";
+                Debug.Log("Save!");
+                save.SaveData();
+            }
     }
 
     /*void Movement()
