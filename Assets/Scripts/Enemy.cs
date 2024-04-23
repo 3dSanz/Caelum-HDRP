@@ -40,6 +40,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private bool facingRight = false;
 
     [SerializeField] float horizontal;
+    [SerializeField] private float _zPosition = 83.6f;
 
      void Awake()
     {
@@ -76,14 +77,25 @@ public class Enemy : MonoBehaviour
             _timeSiguienteGolpe = Time.time + _timeGolpe;
         }
 
-        if(horizontal > 0 && !facingRight)
+        /*if(horizontal>0 && !facingRight)
         {
             Flip();
-        } else if(horizontal < 0 && facingRight)
+        } else if(horizontal<0 && facingRight)
         {
             Flip();
-        }
-        
+        }*/
+        Flip();
+
+        _agent.Move(_agent.desiredVelocity * Time.deltaTime);
+
+        // Obtiene la posición actual del agente
+        Vector3 position = _agent.transform.position;
+
+        // Bloquea el movimiento en el eje Z
+        position.z = _zPosition;
+
+        // Aplica la nueva posición al agente
+        _agent.transform.position = position;
     }
 
     public void TakeDamage(float amount)
@@ -180,13 +192,29 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Flip()
+    /*void Flip()
     {
         facingRight = !facingRight;
         Vector3 theScale = transform.localScale;
         theScale.z *= -1;
         transform.localScale = theScale;
-    }
+    }*/
+
+    void Flip()
+{
+    // Establecer el destino del agente
+    _agent.SetDestination(_agent.destination);
+
+    // Obtener la dirección a la que el agente debe mirar
+    Vector3 lookDirection = _agent.destination - transform.position;
+    lookDirection.y = 0;  // Mantener la rotación solo en el plano XZ
+
+    // Crear una rotación que mire en la dirección deseada
+    Quaternion rotation = Quaternion.LookRotation(lookDirection);
+
+    // Aplicar la rotación al transform del agente
+    _agent.transform.rotation = rotation;
+}
 
 
     void OnDrawGizmos()

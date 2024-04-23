@@ -77,6 +77,7 @@ public class Salto : MonoBehaviour
     [SerializeField] private LayerMask _layerSuelo;
     [SerializeField] private Transform _posicionSensor;
     [SerializeField] private float _alturaSalto = 1;
+    //[SerializeField] private bool _jumpPressed = false;
 
 
     void Awake()
@@ -101,6 +102,14 @@ public class Salto : MonoBehaviour
     {
         if(_hp._isAlive == true)
         {
+            /*if(Input.GetButtonDown("Jump"))
+            {
+                _jumpPressed = true;
+            } else if(Input.GetButtonUp("Jump"))
+            {
+                _jumpPressed = false;
+            }*/
+
             if (_attack._cantMove == false)
             {
                 Jump();
@@ -120,7 +129,7 @@ public class Salto : MonoBehaviour
             _anim.SetBool("isJumping", true);
         }*/
 
-        if(_isGrounded && Input.GetAxis("Jump")>0)
+        if(_isGrounded && Input.GetAxis("Jump")>0 /*&& _jumpPressed == false*/)
         {
             _isGrounded = false;
             _anim.SetBool("Grounded",_isGrounded);
