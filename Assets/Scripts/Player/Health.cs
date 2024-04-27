@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Health : MonoBehaviour
 {
     private Animator _anim;
+    private SFXManager sfxManager;
     public float _currentHealth = 4f;
     public bool _isAlive = true;
     [SerializeField] GameObject[] _hpIU;
@@ -13,6 +15,7 @@ public class Health : MonoBehaviour
     void Start()
     {
         _anim = GetComponentInChildren<Animator>();
+        sfxManager = GameObject.Find("SFXManager").GetComponent<SFXManager>();
     }
 
     void Update()
@@ -30,6 +33,7 @@ public class Health : MonoBehaviour
             if (_currentHealth <= 0 && _isAlive == true)
             {
                 _anim.SetTrigger("IsDeath");
+                SFXManager.instance.PlaySound(SFXManager.instance.deathSound);
                 //Invoke(nameof(Die), 1.5f);
                 _isAlive = false;
             }

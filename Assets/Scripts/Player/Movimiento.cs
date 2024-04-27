@@ -72,6 +72,9 @@ public class Movimiento : MonoBehaviour
     public bool facingRight;
 
     private SaveManager save;
+    WalkSound walkSound;
+    bool isPlaying;
+    Salto _jump;
 
     void Awake()
     {
@@ -79,9 +82,11 @@ public class Movimiento : MonoBehaviour
         _anim = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>(); // Cambio de CharacterController a Rigidbody
         _attack = GetComponent<Ataque>();
+        _jump = GetComponent<Salto>();
         _hp = GetComponentInChildren<Health>();
         facingRight = true;
         save = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+        walkSound = GameObject.Find("WalkSound").GetComponent<WalkSound>();
     }
 
     void Start()
@@ -106,6 +111,19 @@ public class Movimiento : MonoBehaviour
                 {
                     Flip();
                 }
+
+                if(_jump._isGrounded == true && _horizontal != 0)
+                {
+                    if (!walkSound.IsPlaying("caminar"))
+                    {
+                        walkSound.PlaySound("caminar");
+                    }
+                }else
+                    {
+                        walkSound.StopSound("caminar");
+                    }
+
+
             //Movement();
             }
         }

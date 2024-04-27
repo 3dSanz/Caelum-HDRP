@@ -60,6 +60,8 @@ public class Salto : MonoBehaviour
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class Salto : MonoBehaviour
 {
@@ -67,6 +69,7 @@ public class Salto : MonoBehaviour
     private Animator _anim;
     private Ataque _attack;
     private Health _hp;
+    SFXManager sfxManager;
 
     private Vector3 _gravedad;
     private Vector3 _jugadorGravedad;
@@ -77,6 +80,8 @@ public class Salto : MonoBehaviour
     [SerializeField] private LayerMask _layerSuelo;
     [SerializeField] private Transform _posicionSensor;
     [SerializeField] private float _alturaSalto = 1;
+    private bool _onAir;
+
     //[SerializeField] private bool _jumpPressed = false;
 
 
@@ -86,21 +91,23 @@ public class Salto : MonoBehaviour
         _attack = GetComponent<Ataque>();
         _hp = GetComponentInChildren<Health>();
         _rigidbody = GetComponent<Rigidbody>(); // Cambio de CharacterController a Rigidbody
+        sfxManager = GameObject.Find("SFXManager").GetComponent<SFXManager>();
         _gravedad = Physics.gravity;
     }
 
-    /*void Update()
+    void Update()
     {
-        if (_attack._cantMove == false)
+        /*if (_attack._cantMove == false)
         {
             Jump();
         }
-        _anim.SetBool("isJumping", !_isGrounded);
-    }*/
+        _anim.SetBool("isJumping", !_isGrounded);*/
+
+    }
     
     void FixedUpdate()
     {
-        if(_hp._isAlive == true)
+        if (_hp._isAlive == true)
         {
             /*if(Input.GetButtonDown("Jump"))
             {
@@ -115,7 +122,14 @@ public class Salto : MonoBehaviour
                 Jump();
             }
             _anim.SetBool("isJumping", !_isGrounded);
+            
+            if (_isGrounded && Input.GetButtonDown("Jump"))
+            {
+                SFXManager.instance.PlaySound(SFXManager.instance.playerJump);
+            }
+
         }
+
     }
 
     void Jump()
@@ -128,8 +142,7 @@ public class Salto : MonoBehaviour
             _rigidbody.AddForce(Vector3.up * Mathf.Sqrt(_alturaSalto * -2 * _gravedad.y), ForceMode.Impulse);
             _anim.SetBool("isJumping", true);
         }*/
-
-        if(_isGrounded && Input.GetAxis("Jump")>0 /*&& _jumpPressed == false*/)
+        if (_isGrounded && Input.GetAxis("Jump")>0 /*&& _jumpPressed == false*/)
         {
             _isGrounded = false;
             _anim.SetBool("Grounded",_isGrounded);
