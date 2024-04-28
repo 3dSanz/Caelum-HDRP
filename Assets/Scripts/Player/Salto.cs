@@ -127,6 +127,10 @@ public class Salto : MonoBehaviour
             {
                 SFXManager.instance.PlaySound(SFXManager.instance.playerJump);
             }
+            /*else if(_isGrounded)
+            {
+                SFXManager.instance.StopSound();
+            }*/
 
         }
 
