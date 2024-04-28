@@ -61,7 +61,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class Salto : MonoBehaviour
 {
