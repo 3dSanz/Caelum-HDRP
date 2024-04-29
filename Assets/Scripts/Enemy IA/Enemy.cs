@@ -89,7 +89,7 @@ public class Enemy : MonoBehaviour
         {
             Flip();
         }*/
-        Flip();
+        //Flip();
 
         _agent.Move(_agent.desiredVelocity * Time.deltaTime);
 
@@ -199,14 +199,6 @@ public class Enemy : MonoBehaviour
             player.GetComponent<Health>().TakeDamage(dmg);
         }
     }
-
-    /*void Flip()
-    {
-        facingRight = !facingRight;
-        Vector3 theScale = transform.localScale;
-        theScale.z *= -1;
-        transform.localScale = theScale;
-    }*/
 
     void Flip()
 {
