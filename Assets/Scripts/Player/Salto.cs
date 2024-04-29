@@ -122,8 +122,9 @@ public class Salto : MonoBehaviour
             }
             _anim.SetBool("isJumping", !_isGrounded);
             
-            if (_isGrounded && Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump"))
             {
+                SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.playerJump);
             }
             /*else if(_isGrounded)

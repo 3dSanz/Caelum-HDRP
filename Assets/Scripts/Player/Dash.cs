@@ -104,6 +104,8 @@ public class Dash : MonoBehaviour
 
                 isDashing = true;
                 _anim.SetTrigger("isDash");
+                SFXManager.instance.StopSound();
+                SFXManager.instance.PlaySound(SFXManager.instance.dashSound);
             }
 
             if (isDashing)

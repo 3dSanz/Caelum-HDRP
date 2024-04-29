@@ -8,6 +8,7 @@ public class SFXManager : MonoBehaviour
     AudioSource _audio;
     public AudioClip playerJump;
     public AudioClip deathSound;
+    public AudioClip dashSound;
 
     // Start is called before the first frame update
 
@@ -27,6 +28,7 @@ public class SFXManager : MonoBehaviour
 
     public void PlaySound(AudioClip clip)
     {
+        _audio.Stop();
         _audio.PlayOneShot(clip);
     }
 
@@ -48,7 +50,7 @@ public class SFXManager : MonoBehaviour
     // Audio clips for different sound effects
     public AudioClip playerJump;
     public AudioClip deathSound;
-    // ... Agrega otros clips de sonido según tus necesidades ...
+    // ... Agrega otros clips de sonido segï¿½n tus necesidades ...
 
     private AudioSource audioSource;
 
@@ -69,7 +71,7 @@ public class SFXManager : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
     }
 
-    // Método para reproducir un sonido específico
+    // Mï¿½todo para reproducir un sonido especï¿½fico
     public void PlaySound(string soundId)
     {
         switch (soundId)
@@ -189,11 +191,11 @@ public class SFXManager : MonoBehaviour
     public AudioClip playerJump;
     public AudioClip deathSound;
     public AudioClip caminar;
-    // Agrega otros clips de sonido según tus necesidades
+    // Agrega otros clips de sonido segï¿½n tus necesidades
 
     private void Awake()
     {
-        // Crea varios AudioSources (puedes ajustar la cantidad según tus necesidades)
+        // Crea varios AudioSources (puedes ajustar la cantidad segï¿½n tus necesidades)
         for (int i = 0; i < 3; i++)
         {
             var newSource = gameObject.AddComponent<AudioSource>();
@@ -228,7 +230,7 @@ public class SFXManager : MonoBehaviour
 
     public bool IsPlaying(string soundId)
     {
-        // Verifica si algún AudioSource está reproduciendo el sonido
+        // Verifica si algï¿½n AudioSource estï¿½ reproduciendo el sonido
         foreach (var source in audioSources)
         {
             if (source.isPlaying && GetClipById(soundId) == source.clip)
@@ -237,13 +239,13 @@ public class SFXManager : MonoBehaviour
             }
         }
 
-        Debug.LogWarning($"El sonido con el identificador '{soundId}' no está en reproducción.");
+        Debug.LogWarning($"El sonido con el identificador '{soundId}' no estï¿½ en reproducciï¿½n.");
         return false;
     }
 
     public void StopSound(string soundId)
     {
-        // Detén el sonido asociado al identificador proporcionado
+        // Detï¿½n el sonido asociado al identificador proporcionado
         foreach (var source in audioSources)
         {
             if (source.isPlaying && GetClipById(soundId) == source.clip)
@@ -256,7 +258,7 @@ public class SFXManager : MonoBehaviour
 
     private AudioClip GetClipById(string soundId)
     {
-        // Implementa la lógica para obtener el clip según el identificador
+        // Implementa la lï¿½gica para obtener el clip segï¿½n el identificador
         // Por ejemplo, puedes usar un diccionario similar al ejemplo anterior
         // o cualquier otra estructura de datos que prefieras
         // Devuelve el clip correspondiente al identificador
