@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour
     private Vector3 initialDirection;
     private Vector3 target;
     private bool _reflected = false;
+    bool _shooted = false;
 
     void Awake()
     {
@@ -39,13 +40,20 @@ public class Bullet : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         //player = GameObject.FindGameObjectWithTag("Player").transform;
-        player = GameObject.Find("Parcy Low").transform;
+        //player = GameObject.Find("Parcy Low").transform;
         //target = new Vector3(player.position.x, player.position.y, player.position.x);
-        initialDirection = (player.position - transform.position).normalized;
+        //initialDirection = (player.position - transform.position).normalized;
+        SFXEnemyManager.instance.StopSound();
+        SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.bulletInit);
     }
 
     void Update()
     {
+        if(!_shooted)
+        {
+            Shoot();
+            _shooted = true;
+        }
         if(!_reflected)
         {
             rb.velocity = initialDirection * speed;
@@ -56,30 +64,56 @@ public class Bullet : MonoBehaviour
         
     }
 
+    void Shoot()
+    {
+        player = GameObject.Find("Parcy Low").transform;
+        initialDirection = (player.position - transform.position).normalized;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
             other.GetComponentInParent<Health>().TakeDamage(damage);
+            SFXEnemyManager.instance.StopSound();
+            SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.bulletCollide);
             gameObject.SetActive(false);
+            _shooted = false;
         }
 
         if (other.gameObject.tag == "MeleeAttack" && !_reflected)
         {
 
             _reflected = true;
+            SFXManager.instance.StopSound();
+            SFXManager.instance.PlaySound(SFXManager.instance.reboteDisparo);
         }
 
         if (other.gameObject.layer == 6 && _reflected)
         {
             other.GetComponent<Enemy>().TakeDamage(damage);
+            SFXEnemyManager.instance.StopSound();
+            SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.bulletInit);
             gameObject.SetActive(false);
+            _shooted = false;
+        }
+
+        if(other.gameObject.layer == 3)
+        {
+            SFXEnemyManager.instance.StopSound();
+            SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.bulletCollide);
+            gameObject.SetActive(false);
+            _shooted = false;
+
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        SFXEnemyManager.instance.StopSound();
+        SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.bulletCollide);
         gameObject.SetActive(false);
+        _shooted = false;
     }
 
     public void ResetBullet()

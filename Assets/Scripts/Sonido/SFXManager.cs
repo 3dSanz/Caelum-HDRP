@@ -9,6 +9,12 @@ public class SFXManager : MonoBehaviour
     public AudioClip playerJump;
     public AudioClip deathSound;
     public AudioClip dashSound;
+    public AudioClip airHitSound;
+    public AudioClip enemyHitSound;
+    public AudioClip objectHitSound;
+    public AudioClip enemyShootPlayerHit;
+    public AudioClip enemyHitPlayerSound;
+    public AudioClip reboteDisparo;
 
     // Start is called before the first frame update
 

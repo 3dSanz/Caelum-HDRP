@@ -29,6 +29,8 @@ public class Health : MonoBehaviour
         {
             _anim.SetTrigger("Hit");
             _currentHealth -= amount;
+            SFXManager.instance.StopSound();
+            SFXManager.instance.PlaySound(SFXManager.instance.enemyHitPlayerSound);
 
             if (_currentHealth <= 0 && _isAlive == true)
             {
