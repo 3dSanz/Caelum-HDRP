@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -38,13 +39,25 @@ public class Health : MonoBehaviour
                 SFXManager.instance.PlaySound(SFXManager.instance.deathSound);
                 //Invoke(nameof(Die), 1.5f);
                 _isAlive = false;
+
             }
-        }  
+        }
+        
+        if(_isAlive == false)
+        {
+            StartCoroutine("DeathMenu");
+        }
     }
 
     private void Die()
     {
         Destroy(this.gameObject);
+    }
+
+    IEnumerator DeathMenu()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(2);
     }
 
     private void ControlUIHP()
