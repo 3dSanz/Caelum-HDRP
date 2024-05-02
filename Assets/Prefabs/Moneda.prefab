@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3574021981370575274}
   m_Layer: 0
   m_Name: Moneda
-  m_TagString: Untagged
+  m_TagString: ColisionMoneda
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,7 +33,8 @@ Transform:
   m_LocalPosition: {x: 6.3632, y: -0.10818, z: 83.623}
   m_LocalScale: {x: 49.43265, y: 49.43265, z: 49.43265}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8224493576750701494}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 175.038, z: -90}
 --- !u!33 &8340152310819167690
@@ -117,8 +118,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.007356437, y: 0.007356439, z: 0.0036934442}
-  m_Center: {x: 9.175019e-18, y: 1.0680928e-12, z: -0.000473393}
+  m_Size: {x: 0.016499778, y: 0.018683685, z: 0.016531136}
+  m_Center: {x: -0.000032206244, y: 0.0005113884, z: -0.00041120301}
 --- !u!54 &3574021981370575274
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,3 +147,56 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 1
+--- !u!1 &5468027924726997427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8224493576750701494}
+  - component: {fileID: 7635454779263883617}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8224493576750701494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5468027924726997427}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.00717621, y: 0.00717621, z: 0.00717621}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3322750503277034333}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7635454779263883617
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5468027924726997427}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
