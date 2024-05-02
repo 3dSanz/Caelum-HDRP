@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class Chatarra : MonoBehaviour
 {
-    BoxCollider _bc;
+    BoxCollider boxCollider;
 
-    void Awake()
+    void Start()
     {
-        _bc = GetComponent<BoxCollider>();
+        boxCollider = GetComponent<BoxCollider>();
     }
 
-    
-    void OnTriggerEnter(Collider other)
+    public void Pick()
     {
-        if (other.gameObject.tag == "Player" && other.gameObject.layer == 9)
-        {
-            Destroy(this.gameObject);
-        }
+        boxCollider.enabled = false;
+        SFXManager.instance.StopSound();
+        SFXManager.instance.PlaySound(SFXManager.instance.cogerChatarra);
+        Destroy(this.gameObject);
     }
 }

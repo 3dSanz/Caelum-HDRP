@@ -15,6 +15,7 @@ public class SFXManager : MonoBehaviour
     public AudioClip enemyShootPlayerHit;
     public AudioClip enemyHitPlayerSound;
     public AudioClip reboteDisparo;
+    public AudioClip cogerChatarra;
 
     // Start is called before the first frame update
 

@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     }
     State _currentState;
     NavMeshAgent _agent;
+    SpawnMoney _sMoney;
 
     //Transform para en la funcion Awake hacer que la IA busque todo objeto con el Tag "Player"
     Transform _player;
@@ -50,6 +51,7 @@ public class Enemy : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _sMoney = GetComponent<SpawnMoney>();
     }
     void Start()
     {
@@ -110,6 +112,7 @@ public class Enemy : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Die();
+            _sMoney.InstanciarMonedas();
         }
     }
 
