@@ -8,6 +8,7 @@ public class Health : MonoBehaviour
 {
     private Animator _anim;
     private SFXManager sfxManager;
+    private TransicionEscena _tescena;
     public float _currentHealth = 4f;
     public bool _isAlive = true;
     [SerializeField] GameObject[] _hpIU;
@@ -17,6 +18,7 @@ public class Health : MonoBehaviour
     {
         _anim = GetComponentInChildren<Animator>();
         sfxManager = GameObject.Find("SFXManager").GetComponent<SFXManager>();
+        _tescena = GameObject.Find("TransicionEscena").GetComponent<TransicionEscena>();
     }
 
     void Update()
@@ -45,7 +47,7 @@ public class Health : MonoBehaviour
         
         if(_isAlive == false)
         {
-            StartCoroutine("DeathMenu");
+            _tescena.CambiarEscena2();
         }
     }
 
@@ -54,11 +56,11 @@ public class Health : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    IEnumerator DeathMenu()
+    /*IEnumerator DeathMenu()
     {
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(2);
-    }
+    }*/
 
     private void ControlUIHP()
     {

@@ -8,6 +8,7 @@ TagManager:
   - CP1
   - CP2
   - ColisionMoneda
+  - BossActivation
   layers:
   - Default
   - TransparentFX

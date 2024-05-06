@@ -1,38 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
     private AudioSource bgmSource;
     private AudioSource sfxSource;
+    private TransicionEscena _tescena;
 
     void Awake()
     {
         bgmSource = GameObject.Find("SoundManager").GetComponent<AudioSource>();
         sfxSource = GameObject.Find("SFXManager").GetComponent<AudioSource>();
+        _tescena = GameObject.Find("TransicionEscena").GetComponent<TransicionEscena>();
     }
 
     public void PlayGame()
     {
-        SceneManager.LoadScene(1);
+        _tescena.CambiarEscena1();
     }
 
     public void ExitGame()
     {
-        Application.Quit();
+        _tescena.ExitGame();
     }
 
     public void MenuGame()
     {
-        SceneManager.LoadScene(0);
+        _tescena.CambiarEscena0();
     }
 
-    public void DeathGame()
+    /*public void DeathGame()
     {
         SceneManager.LoadScene(2);
-    }
+    }*/
 
     public void MusicVolume(float value)
     {
