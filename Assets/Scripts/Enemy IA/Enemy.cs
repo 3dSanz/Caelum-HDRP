@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VFX;
 
 public class Enemy : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Enemy : MonoBehaviour
     State _currentState;
     NavMeshAgent _agent;
     SpawnMoney _sMoney;
+    private ParticleSystem _pSystem;
 
     //Transform para en la funcion Awake hacer que la IA busque todo objeto con el Tag "Player"
     Transform _player;
@@ -52,6 +54,7 @@ public class Enemy : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindGameObjectWithTag("Player").transform;
         _sMoney = GetComponent<SpawnMoney>();
+        _pSystem = GetComponent<ParticleSystem>();
     }
     void Start()
     {
@@ -108,6 +111,8 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float amount)
     {
         _currentHealth -= amount;
+        //StartCoroutine(ParticulaDanoRecibido());
+        _pSystem.Play();
 
         if (_currentHealth <= 0)
         {
@@ -115,6 +120,13 @@ public class Enemy : MonoBehaviour
             _sMoney.InstanciarMonedas();
         }
     }
+
+    /*IEnumerator ParticulaDanoRecibido()
+    {
+        _pSystem.Play();
+        yield return new WaitForSeconds(0.3f);
+        _pSystem.Stop();
+    }*/
 
     void Die()
     {

@@ -56,9 +56,10 @@ public class Movimiento : MonoBehaviour
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.VFX;
 public class Movimiento : MonoBehaviour
 {
+    private VisualEffect _vfxRun;
     private Rigidbody _rigidbody; // Cambio de CharacterController a Rigidbody
     private Transform _camera;
     private Animator _anim;
@@ -84,6 +85,7 @@ public class Movimiento : MonoBehaviour
         _attack = GetComponent<Ataque>();
         _jump = GetComponent<Salto>();
         _hp = GetComponentInChildren<Health>();
+        _vfxRun = GameObject.Find("ParticulaRunPolvo").GetComponent<VisualEffect>();
         facingRight = true;
         save = GameObject.Find("SaveManager").GetComponent<SaveManager>();
         walkSound = GameObject.Find("WalkSound").GetComponent<WalkSound>();
@@ -117,11 +119,18 @@ public class Movimiento : MonoBehaviour
                     if (!walkSound.IsPlaying("caminar"))
                     {
                         walkSound.PlaySound("caminar");
+                        _vfxRun.enabled = true;
+                        _vfxRun.Play();
                     }
                 }else
                     {
                         walkSound.StopSound("caminar");
+                        _vfxRun.Stop();
                     }
+                if(_jump._isGrounded == false)
+                {
+                    _vfxRun.enabled = false;
+                }
 
 
             //Movement();
