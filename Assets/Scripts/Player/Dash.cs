@@ -70,7 +70,7 @@ public class Dash : MonoBehaviour
             Debug.Log("DoDash End");
         }
     }*/
-
+    private ParticleSystem _pSystem;
     public float dashDistance = 5f;
     public float dashDuration = 0.5f;
     public LayerMask obstacleLayer;
@@ -89,6 +89,7 @@ public class Dash : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         _anim = GetComponentInChildren<Animator>();
         _hp = GetComponentInChildren<Health>();
+        _pSystem = GameObject.Find("ParticulaDash").GetComponent<ParticleSystem>();
     }
 
     private void Update()
@@ -106,6 +107,7 @@ public class Dash : MonoBehaviour
                 _anim.SetTrigger("isDash");
                 SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.dashSound);
+                _pSystem.Play();
             }
 
             if (isDashing)

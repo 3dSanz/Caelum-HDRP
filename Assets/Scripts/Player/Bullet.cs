@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
     {
         gameObject.SetActive(false);
     }*/
-
+    private ParticleSystem _pSystem;
     public float speed = 10f;
     public int damage = 1;
     private Transform player;
@@ -34,6 +34,7 @@ public class Bullet : MonoBehaviour
     void Awake()
     {
         ResetBullet();
+        _pSystem = GetComponent<ParticleSystem>();
     }
 
     void Start()
@@ -87,6 +88,7 @@ public class Bullet : MonoBehaviour
             _reflected = true;
             SFXManager.instance.StopSound();
             SFXManager.instance.PlaySound(SFXManager.instance.reboteDisparo);
+            _pSystem.Play ();
         }
 
         if (other.gameObject.layer == 6 && _reflected)

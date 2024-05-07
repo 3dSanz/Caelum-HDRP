@@ -66,7 +66,7 @@ public class Movimiento : MonoBehaviour
     private Health _hp;
     [SerializeField] private float _vel = 9;
     //[SerializeField] private float turnSmoothTime = 0.1f;
-    private float _horizontal;
+    public float _horizontal;
     private float turnSmoothVelocity;
 
     public bool facingRight;

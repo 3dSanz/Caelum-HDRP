@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
     private Animator _anim;
     private SFXManager sfxManager;
     private TransicionEscena _tescena;
+    private ParticleSystem _pSystem;
     public float _currentHealth = 4f;
     public bool _isAlive = true;
     [SerializeField] GameObject[] _hpIU;
@@ -19,6 +20,7 @@ public class Health : MonoBehaviour
         _anim = GetComponentInChildren<Animator>();
         sfxManager = GameObject.Find("SFXManager").GetComponent<SFXManager>();
         _tescena = GameObject.Find("TransicionEscena").GetComponent<TransicionEscena>();
+        _pSystem = GameObject.Find("ParticulaGolpeado").GetComponent<ParticleSystem>();
     }
 
     void Update()
@@ -34,6 +36,7 @@ public class Health : MonoBehaviour
             _currentHealth -= amount;
             SFXManager.instance.StopSound();
             SFXManager.instance.PlaySound(SFXManager.instance.enemyHitPlayerSound);
+            _pSystem.Play();
 
             if (_currentHealth <= 0 && _isAlive == true)
             {
@@ -41,7 +44,6 @@ public class Health : MonoBehaviour
                 SFXManager.instance.PlaySound(SFXManager.instance.deathSound);
                 //Invoke(nameof(Die), 1.5f);
                 _isAlive = false;
-
             }
         }
         
