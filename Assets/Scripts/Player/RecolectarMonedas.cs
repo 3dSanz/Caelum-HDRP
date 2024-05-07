@@ -7,6 +7,7 @@ public class RecolectarMonedas : MonoBehaviour
 {   
     public Text coinText;
     int contMonedas;
+
     private void OnTriggerEnter(Collider other) 
     {
         if (other.gameObject.tag == "ColisionMoneda")
@@ -20,6 +21,8 @@ public class RecolectarMonedas : MonoBehaviour
      public void AddCoin()
     {
         contMonedas++;
+        SFXManager.instance.StopSound();
+        SFXManager.instance.PlaySound(SFXManager.instance.cogerChatarra);
         coinText.text = contMonedas.ToString();
     }
 }

@@ -145,16 +145,16 @@ public class Ataque : MonoBehaviour
             Vector3 _direccion = new Vector3 (1,0,0);
             if(!_mov.facingRight)
             {
-                StartCoroutine(AttackCooldown());
+                //StartCoroutine(AttackCooldown());
                 //_rigidbody.AddForce(_direccion * slideForce, ForceMode.Impulse);
-                _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(slideForceAir * -2 * Physics.gravity.x),0), ForceMode.Impulse);
+                _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(slideForce * -2 * Physics.gravity.x),0), ForceMode.Impulse);
                 Debug.Log("Desplazado lateral");
 
             } else if(_mov.facingRight)
             {
-                StartCoroutine(AttackCooldown());
+                //StartCoroutine(AttackCooldown());
                 //_rigidbody.AddForce(-_direccion * slideForce, ForceMode.Impulse);
-                _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(-slideForceAir * -2 * Physics.gravity.x),0), ForceMode.Impulse);
+                _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(-slideForce * -2 * Physics.gravity.x),0), ForceMode.Impulse);
                 Debug.Log("Desplazado lateral");
             }
         }

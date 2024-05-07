@@ -111,8 +111,8 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float amount)
     {
         _currentHealth -= amount;
-        //StartCoroutine(ParticulaDanoRecibido());
-        _pSystem.Play();
+        StartCoroutine(ParticulaDanoRecibido());
+        //_pSystem.Play();
 
         if (_currentHealth <= 0)
         {
@@ -121,12 +121,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    /*IEnumerator ParticulaDanoRecibido()
+    IEnumerator ParticulaDanoRecibido()
     {
         _pSystem.Play();
         yield return new WaitForSeconds(0.3f);
-        _pSystem.Stop();
-    }*/
+        _pSystem.Clear();
+    }
 
     void Die()
     {
