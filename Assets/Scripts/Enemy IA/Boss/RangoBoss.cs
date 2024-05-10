@@ -24,14 +24,8 @@ public class RangoBoss : MonoBehaviour
 
                 case 1:
                     //Golpe2
-                    _anim.SetFloat("skills", 0);
+                    _anim.SetFloat("skills", 0.5f);
                     boss.hit_Select = 1;
-                    break;
-
-                case 2:
-                    //Golpe3
-                    _anim.SetFloat("skills", 0);
-                    boss.hit_Select = 2;
                     break;
             }
             _anim.SetBool("walk", false);
@@ -40,16 +34,5 @@ public class RangoBoss : MonoBehaviour
             boss.atacando = true;
             GetComponent<CapsuleCollider>().enabled = false;
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

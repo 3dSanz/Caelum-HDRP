@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] bool _toPlayer;
     [SerializeField] bool _toPatrolPoint;
     [SerializeField] bool _normalEnemy;
+    [SerializeField] bool _bossEnemy;
 
     void Awake()
     {
@@ -65,47 +66,51 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        switch(_currentState)
+        if(_normalEnemy == true)
         {
-            case State.Patroling:
-            Patrol();
-            break;
-            case State.Chasing:
-            Chase();
-            break;
-            case State.Attacking:
-            Attack();
-            break;
+            switch(_currentState)
+            {
+                case State.Patroling:
+                Patrol();
+                break;
+                case State.Chasing:
+                Chase();
+                break;
+                case State.Attacking:
+                Attack();
+                break;
+            }
+            MovementAI();
+
+            float horizontal = _agent.velocity.x;
+
+            if(Time.time >= _timeSiguienteGolpe)
+            {
+                EnemyCollisionAttack(damage);
+                _timeSiguienteGolpe = Time.time + _timeGolpe;
+            }
+
+            /*if(horizontal>0 && !facingRight)
+            {
+                Flip();
+            } else if(horizontal<0 && facingRight)
+            {
+                Flip();
+            }*/
+            //Flip();
+
+            _agent.Move(_agent.desiredVelocity * Time.deltaTime);
+
+            // Obtiene la posición actual del agente
+            Vector3 position = _agent.transform.position;
+
+            // Bloquea el movimiento en el eje Z
+            position.z = _zPosition;
+
+            // Aplica la nueva posición al agente
+            _agent.transform.position = position;
         }
-        MovementAI();
-
-        float horizontal = _agent.velocity.x;
-
-        if(Time.time >= _timeSiguienteGolpe)
-        {
-            EnemyCollisionAttack(damage);
-            _timeSiguienteGolpe = Time.time + _timeGolpe;
-        }
-
-        /*if(horizontal>0 && !facingRight)
-        {
-            Flip();
-        } else if(horizontal<0 && facingRight)
-        {
-            Flip();
-        }*/
-        //Flip();
-
-        _agent.Move(_agent.desiredVelocity * Time.deltaTime);
-
-        // Obtiene la posición actual del agente
-        Vector3 position = _agent.transform.position;
-
-        // Bloquea el movimiento en el eje Z
-        position.z = _zPosition;
-
-        // Aplica la nueva posición al agente
-        _agent.transform.position = position;
+        
     }
 
     public void TakeDamage(float amount)

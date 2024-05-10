@@ -158,6 +158,33 @@ public class Ataque : MonoBehaviour
                 Debug.Log("Desplazado lateral");
             }
         }
+
+        Collider[] bosses = Physics.OverlapSphere(_attackForward.position, attackRadius, enemyLayer);
+       
+
+        foreach (Collider boss in bosses)
+        {
+            boss.GetComponent<Boss>().hp_min -= dmg;
+        }
+
+        if(bosses.Length > 0)
+        {
+            Vector3 _direccion = new Vector3 (1,0,0);
+            if(!_mov.facingRight)
+            {
+                //StartCoroutine(AttackCooldown());
+                //_rigidbody.AddForce(_direccion * slideForce, ForceMode.Impulse);
+                _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(slideForce * -2 * Physics.gravity.x),0), ForceMode.Impulse);
+                Debug.Log("Desplazado lateral");
+
+            } else if(_mov.facingRight)
+            {
+                //StartCoroutine(AttackCooldown());
+                //_rigidbody.AddForce(-_direccion * slideForce, ForceMode.Impulse);
+                _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(-slideForce * -2 * Physics.gravity.x),0), ForceMode.Impulse);
+                Debug.Log("Desplazado lateral");
+            }
+        }
             
 
         /*if (enemies.Length > 0)
@@ -192,6 +219,12 @@ public class Ataque : MonoBehaviour
             enemy.GetComponent<Enemy>().TakeDamage(dmg);
         }
 
+        Collider[] bosses = Physics.OverlapSphere(_attackDown.position, attackRadius, enemyLayer);
+
+        foreach (Collider boss in bosses)
+        {
+            boss.GetComponent<Boss>().hp_min -= dmg;
+        }
         /*Collider[] projectiles = Physics.OverlapSphere(transform.position, attackRadius, bulletLayer);
         foreach (Collider projectile in projectiles)
         {
@@ -210,6 +243,21 @@ public class Ataque : MonoBehaviour
             enemy.GetComponent<Enemy>().TakeDamage(dmg);
         }
         if (enemies.Length > 0)
+        {
+            //Vector3 slideDirection = -transform.up;
+            //AddImpact(slideDirection, slideForceAir);
+            //_rigidbody.AddForce(Vector3.up * slideForceAir, ForceMode.Impulse);
+            _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(slideForceAir * -2 * Physics.gravity.y),0), ForceMode.Impulse);
+            Debug.Log("Desplazado arriba");
+        }
+
+        Collider[] bosses = Physics.OverlapSphere(_attackDown.position, attackRadius, enemyLayer);
+
+        foreach (Collider boss in bosses)
+        {
+            boss.GetComponent<Boss>().hp_min -= dmg;
+        }
+        if (bosses.Length > 0)
         {
             //Vector3 slideDirection = -transform.up;
             //AddImpact(slideDirection, slideForceAir);

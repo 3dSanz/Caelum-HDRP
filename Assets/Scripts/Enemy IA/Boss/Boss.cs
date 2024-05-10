@@ -62,7 +62,7 @@ public class Boss : MonoBehaviour
                             transform.Translate(Vector3.forward * speed * Time.deltaTime);
                         }
 
-                        _anim.SetBool("atack", false);
+                        _anim.SetBool("attack", false);
                         cronometro += 1 * Time.deltaTime;
                         if (cronometro > time_rutina)
                         {
@@ -72,19 +72,6 @@ public class Boss : MonoBehaviour
                         break;
 
                     case 1:
-                        //RUN
-                        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
-                        _anim.SetBool("walk", false);
-                        _anim.SetBool("run", true);
-                        if (transform.rotation == rotation)
-                        {
-                            transform.Translate(Vector3.forward * speed * 2 * Time.deltaTime);
-                        }
-
-                        _anim.SetBool("atack", false);
-                        break;
-
-                    case 2:
                         //JUMPATTACK
                         if (fase == 2)
                         {
@@ -92,7 +79,7 @@ public class Boss : MonoBehaviour
                             _anim.SetBool("walk", false);
                             _anim.SetBool("run", false);
                             _anim.SetBool("attack", true);
-                            _anim.SetFloat("skills", 0);
+                            _anim.SetFloat("skills", 1);
                             hit_Select = 3;
                             rango.GetComponent<CapsuleCollider>().enabled = false;
 
