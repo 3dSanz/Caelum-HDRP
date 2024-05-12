@@ -61,7 +61,7 @@ public class Ataque : MonoBehaviour
             //Ataque
             if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false /*&& Time.time >= _timeSiguienteMelee*/)
             {
-                SFXManager.instance.StopSound();
+                //SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.airHitSound);
                 PerformAttack(_damage);
                 //_anim.SetBool("isAttacking",true);
@@ -82,7 +82,7 @@ public class Ataque : MonoBehaviour
 
             if (_lookUp == true && Input.GetButtonDown("Fire1") /*&& Time.time >= _timeSiguienteMelee*/)
             {
-                SFXManager.instance.StopSound();
+                //SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.airHitSound);
                 PerformUpAttack(_damage);
                 _anim.SetTrigger("upAttack");
@@ -102,7 +102,7 @@ public class Ataque : MonoBehaviour
 
             if (_jump._isGrounded == false && _lookDown == true && Input.GetButtonDown("Fire1") /*&& Time.time >= _timeSiguienteMelee*/)
             {
-                SFXManager.instance.StopSound();
+                //SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.airHitSound);
                 DownAttack(_damage);
                 _anim.SetTrigger("isDownAttack");

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class HitBoss : MonoBehaviour
 {
-    public int damage;
+    public float damage;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            other.GetComponentInParent<Health>().TakeDamage(damage);
+            other.GetComponent<Health>().TakeDamage(damage);
         }
     }
 
