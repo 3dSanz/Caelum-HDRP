@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviour
     NavMeshAgent _agent;
     SpawnMoney _sMoney;
     private ParticleSystem _pSystem;
+    Boss _boss;
 
     //Transform para en la funcion Awake hacer que la IA busque todo objeto con el Tag "Player"
     Transform _player;
@@ -30,7 +32,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float _maxHealth = 3f;
     [SerializeField] public bool _isAttacking;
 
-    [SerializeField] private float _currentHealth;
+    public float _currentHealth;
 
 
     [SerializeField] private float spawnInterval = 3f;
@@ -50,12 +52,16 @@ public class Enemy : MonoBehaviour
     [SerializeField] bool _normalEnemy;
     [SerializeField] bool _bossEnemy;
 
+    SoundManager _bgm;
+
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindGameObjectWithTag("Player").transform;
         _sMoney = GetComponent<SpawnMoney>();
         _pSystem = GetComponent<ParticleSystem>();
+        _boss = GetComponent<Boss>();
+        _bgm = GameObject.Find("SoundManager").GetComponent<SoundManager>();
     }
     void Start()
     {
@@ -66,7 +72,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if(_normalEnemy == true)
+        if(_normalEnemy == true && _bossEnemy == false)
         {
             switch(_currentState)
             {
@@ -110,7 +116,24 @@ public class Enemy : MonoBehaviour
             // Aplica la nueva posición al agente
             _agent.transform.position = position;
         }
-        
+        if (_normalEnemy == false && _bossEnemy == true)
+        {
+            _boss.barra.fillAmount = _currentHealth / _maxHealth;
+            if (_currentHealth > 0)
+            {
+                _boss.Vivo();
+            }
+            else
+            {
+                if (!_boss.muerto)
+                {
+                    _boss._anim.SetTrigger("dead");
+                    _bgm.StopBGM();
+                    _boss.muerto = true;
+                }
+            }
+
+        }
     }
 
     public void TakeDamage(float amount)
@@ -119,7 +142,7 @@ public class Enemy : MonoBehaviour
         StartCoroutine(ParticulaDanoRecibido());
         //_pSystem.Play();
 
-        if (_currentHealth <= 0)
+        if (_currentHealth <= 0 && _normalEnemy == true && _bossEnemy == false)
         {
             Die();
             _sMoney.InstanciarMonedas();
@@ -186,7 +209,7 @@ public class Enemy : MonoBehaviour
 
     void PuntoAleatorio()
     {
-        _agent.destination = _patrolPoints[Random.Range(0,_patrolPoints.Length)].position;
+        _agent.destination = _patrolPoints[UnityEngine.Random.Range(0,_patrolPoints.Length)].position;
     }
 
     bool EnRango(float _rango)
