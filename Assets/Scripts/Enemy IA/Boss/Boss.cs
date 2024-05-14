@@ -91,6 +91,7 @@ public class Boss : MonoBehaviour
                             _anim.SetFloat("skills", 1);
                             hit_Select = 1;
                             rango.GetComponent<CapsuleCollider>().enabled = false;
+                            Direction_Attack_Start();
 
                             if (direction_Skill)
                             {
@@ -98,7 +99,7 @@ public class Boss : MonoBehaviour
                                 {
                                     transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
                                 }
-
+                                _anim.SetTrigger("jump");
                                 transform.Translate(Vector3.forward * 8 * Time.deltaTime);
                             }
                         }
@@ -156,7 +157,7 @@ public class Boss : MonoBehaviour
 
     public void Vivo()
     {
-        if(_enemy._currentHealth < 10)
+        if(_enemy._currentHealth < 15)
         {
             fase = 2;
             time_rutina = 1;
