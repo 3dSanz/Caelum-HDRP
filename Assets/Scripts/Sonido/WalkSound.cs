@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WalkSound : MonoBehaviour
 {
-    public static WalkSound instance { get; private set; }
+    //public static WalkSound instance { get; private set; }
     private AudioSource _audio;
     private Dictionary<string, AudioClip> soundDictionary = new Dictionary<string, AudioClip>();
 
@@ -20,14 +20,14 @@ public class WalkSound : MonoBehaviour
         soundDictionary["caminar"] = caminar;
 
 
-        if (instance != null && instance != this)
+        /*if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
         }
         else
         {
             instance = this;
-        }
+        }*/
     }
 
     public void PlaySound(string soundId)

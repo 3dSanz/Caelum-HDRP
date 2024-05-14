@@ -28,6 +28,10 @@ public class RangoBoss : MonoBehaviour
                     _anim.SetFloat("skills",0);
                     SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack1Boss);
                     boss.hit_Select = 0;
+                    if(boss.fase == 1)
+                    {
+                        StartCoroutine(TimingEntreGolpes());
+                    }
                     break;
 
                 case 1:
@@ -35,7 +39,22 @@ public class RangoBoss : MonoBehaviour
                     _anim.SetFloat("skills", 0.5f);
                     SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack2Boss);
                     boss.hit_Select = 0;
+                    if(boss.fase == 1)
+                    {
+                        StartCoroutine(TimingEntreGolpes());
+                    }
                     break;
+                case 2:
+                    //Golpe3
+                    //if(boss.fase == 2)
+                    //{
+                        _anim.SetFloat("skills", 1f);
+                        SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack3Boss);
+                        boss.hit_Select = 0;
+                        StartCoroutine(TimingEntreGolpes());
+                    //}
+                    break;
+                    
             }
             _anim.SetBool("walk", false);
             _anim.SetBool("run", false);
@@ -43,5 +62,10 @@ public class RangoBoss : MonoBehaviour
             boss.atacando = true;
             GetComponent<CapsuleCollider>().enabled = false;
         }
+    }
+
+    IEnumerator TimingEntreGolpes()
+    {
+        yield return new WaitForSeconds(2f);
     }
 }

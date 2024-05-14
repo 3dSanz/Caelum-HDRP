@@ -37,6 +37,8 @@ public class Boss : MonoBehaviour
     public AudioSource _sfxboss;
     public bool muerto;
 
+    WalkSound walkBossSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +47,7 @@ public class Boss : MonoBehaviour
         _playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         _enemy = GetComponent<Enemy>();
         _agent = GetComponent<NavMeshAgent>();
+        walkBossSound = GameObject.Find("WalkBossSound").GetComponent<WalkSound>();
     }
 
     public void Comportamiento_Boss()
@@ -65,6 +68,17 @@ public class Boss : MonoBehaviour
                         //WALK
                         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
                         _anim.SetBool("walk", true);
+                        if(_anim.GetBool("walk") == true)
+                        {
+                            if (!walkBossSound.IsPlaying("caminar"))
+                            {
+                                walkBossSound.PlaySound("caminar");
+                            }
+                        }else
+                            {
+                                walkBossSound.StopSound("caminar");
+                            }
+                            
                         _anim.SetBool("run", false);
                         if (transform.rotation == rotation)
                         {
