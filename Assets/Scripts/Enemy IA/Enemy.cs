@@ -53,6 +53,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] bool _bossEnemy;
 
     SoundManager _bgm;
+    EntradaBoss _entry;
 
     void Awake()
     {
@@ -62,6 +63,7 @@ public class Enemy : MonoBehaviour
         _pSystem = GetComponent<ParticleSystem>();
         _boss = GetComponent<Boss>();
         _bgm = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        _entry = GameObject.Find("Activation Boss").GetComponent<EntradaBoss>();
     }
     void Start()
     {
@@ -129,10 +131,10 @@ public class Enemy : MonoBehaviour
                 {
                     _boss._anim.SetTrigger("dead");
                     _bgm.StopBGM();
+                    _entry._bossUI.SetActive(false);
                     _boss.muerto = true;
                 }
             }
-
         }
     }
 
@@ -154,6 +156,11 @@ public class Enemy : MonoBehaviour
         _pSystem.Play();
         yield return new WaitForSeconds(0.3f);
         _pSystem.Clear();
+    }
+
+    IEnumerator WaitToWatch()
+    {
+        yield return new WaitForSeconds(2f);
     }
 
     void Die()

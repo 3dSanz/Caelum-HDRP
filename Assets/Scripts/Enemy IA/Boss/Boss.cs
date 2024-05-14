@@ -9,6 +9,7 @@ public class Boss : MonoBehaviour
 {
     NavMeshAgent _agent;
     Transform _playerPosition;
+    EntradaBoss _entry;
     //Codigo Enemigo Base
     Enemy _enemy;
     public int rutina;
@@ -40,7 +41,7 @@ public class Boss : MonoBehaviour
     void Start()
     {
         _anim = GetComponent<Animator>();
-        target = GameObject.Find("Player");
+        target = GameObject.Find("Parcy");
         _playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         _enemy = GetComponent<Enemy>();
         _agent = GetComponent<NavMeshAgent>();
@@ -54,7 +55,7 @@ public class Boss : MonoBehaviour
             lookPos.y = 0;
             var rotation = Quaternion.LookRotation(lookPos);
             //point.transform.LookAt(target.transform.position);
-            _sfxboss.enabled = true;
+            //_sfxboss.enabled = true;
 
             if (Vector3.Distance(transform.position, target.transform.position) > 1 && !atacando)
             {
@@ -139,12 +140,18 @@ public class Boss : MonoBehaviour
     {
         hit[0].GetComponent<SphereCollider>().enabled = true;
         hit[1].GetComponent<SphereCollider>().enabled = true;
+
+        hit[0].GetComponent<HitBoss>().enabled = true;
+        hit[1].GetComponent<HitBoss>().enabled = true;
     }
 
     public void ColliderWeaponFalse()
     {
         hit[0].GetComponent<SphereCollider>().enabled = false;
         hit[1].GetComponent<SphereCollider>().enabled = false;
+
+        hit[0].GetComponent<HitBoss>().enabled = false;
+        hit[1].GetComponent<HitBoss>().enabled = false;
     }
 
     public void Vivo()

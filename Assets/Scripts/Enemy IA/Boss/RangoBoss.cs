@@ -9,6 +9,13 @@ public class RangoBoss : MonoBehaviour
     public Boss boss;
     public int melee;
 
+
+    void Awake()
+    {
+        _anim = GameObject.Find("BOSS 1").GetComponent<Animator>();
+        boss = GameObject.Find("BOSS 1").GetComponent<Boss>();
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
@@ -19,13 +26,15 @@ public class RangoBoss : MonoBehaviour
                 case 0:
                     //Golpe1
                     _anim.SetFloat("skills",0);
+                    SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack1Boss);
                     boss.hit_Select = 0;
                     break;
 
                 case 1:
                     //Golpe2
                     _anim.SetFloat("skills", 0.5f);
-                    boss.hit_Select = 1;
+                    SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack2Boss);
+                    boss.hit_Select = 0;
                     break;
             }
             _anim.SetBool("walk", false);

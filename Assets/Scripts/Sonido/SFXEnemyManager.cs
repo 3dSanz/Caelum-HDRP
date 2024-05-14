@@ -11,6 +11,13 @@ public class SFXEnemyManager : MonoBehaviour
     public AudioClip enemyDeath;
     public AudioClip bulletCollide;
     public AudioClip bulletInit;
+    public AudioClip attack1Boss;
+    public AudioClip attack2Boss;
+    public AudioClip attack3Boss;
+    public AudioClip jumpBoss;
+    public AudioClip walkBoss;
+    public AudioClip deathBoss;
+    public AudioClip presentationBoss;
 
     // Start is called before the first frame update
 

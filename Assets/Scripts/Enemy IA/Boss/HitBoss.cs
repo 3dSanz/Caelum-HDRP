@@ -5,13 +5,30 @@ using UnityEngine;
 public class HitBoss : MonoBehaviour
 {
     public float damage;
+    LayerMask playerLayer;
+    [SerializeField] private float attackRadius;
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
             other.GetComponent<Health>().TakeDamage(damage);
         }
+    }*/
+
+    public void EnemyCollisionAttack()
+    {
+       Collider[] players = Physics.OverlapSphere(transform.position, attackRadius, playerLayer);
+        foreach (Collider player in players)
+        {
+            player.GetComponent<Health>().TakeDamage(damage);
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 
 }
