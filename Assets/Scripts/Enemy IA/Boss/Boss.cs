@@ -68,12 +68,9 @@ public class Boss : MonoBehaviour
                         //WALK
                         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
                         _anim.SetBool("walk", true);
-                        if(_anim.GetBool("walk") == true)
+                        if(_anim.GetBool("walk") && !walkBossSound.IsPlaying("caminar"))
                         {
-                            if (!walkBossSound.IsPlaying("caminar"))
-                            {
                                 walkBossSound.PlaySound("caminar");
-                            }
                         }else
                             {
                                 walkBossSound.StopSound("caminar");
@@ -89,21 +86,23 @@ public class Boss : MonoBehaviour
                         cronometro += 1 * Time.deltaTime;
                         if (cronometro > time_rutina)
                         {
-                            rutina = Random.Range(0, 1);
+                            rutina = Random.Range(0, 2);
                             cronometro = 0;
                         }
                         break;
 
                     case 1:
                         //JUMPATTACK
-                        if (fase == 2)
-                        {
+                        //if (fase == 2)
+                        //{
                             jump_distance += 1 * Time.deltaTime;
                             _anim.SetBool("walk", false);
                             _anim.SetBool("run", false);
-                            _anim.SetBool("attack", true);
-                            _anim.SetFloat("skills", 1);
-                            hit_Select = 1;
+                            _anim.SetBool("attack", false);
+                            //_anim.SetBool("attack", true);
+                            //_anim.SetFloat("skills", 1);
+                            _anim.SetTrigger("jump");
+                            //hit_Select = 1;
                             rango.GetComponent<CapsuleCollider>().enabled = false;
                             Direction_Attack_Start();
 
@@ -113,15 +112,15 @@ public class Boss : MonoBehaviour
                                 {
                                     transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
                                 }
-                                _anim.SetTrigger("jump");
+                                //_anim.SetTrigger("jump");
                                 transform.Translate(Vector3.forward * 8 * Time.deltaTime);
                             }
-                        }
-                        else
+                        //}
+                        /*else
                         {
                             rutina = 0;
                             cronometro = 0;
-                        }
+                        }*/
                         break;
                 }
             }

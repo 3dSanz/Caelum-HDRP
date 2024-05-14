@@ -40,4 +40,9 @@ public class EntradaBoss : MonoBehaviour
         _camaraPrincipal.SetActive(true);
         _initiatingCombat = true;
     }
+
+    public void BossMuerto()
+    {
+        _bossColliders.SetActive(false);
+    }
 }

@@ -20,8 +20,9 @@ public class RangoBoss : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            melee = Random.Range(0, 2);
-            switch(melee)
+            melee = Random.Range(0, 3);
+            StartCoroutine(TimingEntreGolpes());
+            switch (melee)
             {
                 case 0:
                     //Golpe1
@@ -46,13 +47,13 @@ public class RangoBoss : MonoBehaviour
                     break;
                 case 2:
                     //Golpe3
-                    //if(boss.fase == 2)
-                    //{
+                    if(boss.fase == 2)
+                    {
                         _anim.SetFloat("skills", 1f);
                         SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack3Boss);
                         boss.hit_Select = 0;
                         StartCoroutine(TimingEntreGolpes());
-                    //}
+                    }
                     break;
                     
             }
@@ -66,6 +67,6 @@ public class RangoBoss : MonoBehaviour
 
     IEnumerator TimingEntreGolpes()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2);
     }
 }

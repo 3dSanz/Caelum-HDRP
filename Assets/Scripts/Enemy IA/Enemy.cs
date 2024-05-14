@@ -131,8 +131,10 @@ public class Enemy : MonoBehaviour
                 {
                     _boss._anim.SetTrigger("dead");
                     _bgm.StopBGM();
+                    SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.deathBoss);
                     _entry._bossUI.SetActive(false);
                     _boss.muerto = true;
+                    _entry.BossMuerto();
                 }
             }
         }
