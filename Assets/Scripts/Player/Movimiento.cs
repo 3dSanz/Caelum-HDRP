@@ -129,7 +129,7 @@ public class Movimiento : MonoBehaviour
                     }
                 if(_jump._isGrounded == false)
                 {
-                    _vfxRun.enabled = false;
+                    _vfxRun.Stop();
                 }
 
 

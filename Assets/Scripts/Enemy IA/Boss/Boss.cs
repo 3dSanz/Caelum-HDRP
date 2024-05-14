@@ -141,8 +141,8 @@ public class Boss : MonoBehaviour
         hit[0].GetComponent<SphereCollider>().enabled = true;
         hit[1].GetComponent<SphereCollider>().enabled = true;
 
-        hit[0].GetComponent<HitBoss>().enabled = true;
-        hit[1].GetComponent<HitBoss>().enabled = true;
+        //hit[0].GetComponent<HitBoss>().enabled = true;
+        //hit[1].GetComponent<HitBoss>().enabled = true;
     }
 
     public void ColliderWeaponFalse()
@@ -150,8 +150,8 @@ public class Boss : MonoBehaviour
         hit[0].GetComponent<SphereCollider>().enabled = false;
         hit[1].GetComponent<SphereCollider>().enabled = false;
 
-        hit[0].GetComponent<HitBoss>().enabled = false;
-        hit[1].GetComponent<HitBoss>().enabled = false;
+        //hit[0].GetComponent<HitBoss>().enabled = false;
+        //hit[1].GetComponent<HitBoss>().enabled = false;
     }
 
     public void Vivo()
