@@ -67,7 +67,7 @@ public class Ataque : MonoBehaviour
                 //_anim.SetBool("isAttacking",true);
                 _anim.SetTrigger("isAttack");
                 Debug.Log("Ataque Normal");
-                _ataqueCentro.SetActive(true);
+                //_ataqueCentro.SetActive(true);
                 //_timeSiguienteMelee = Time.time + _timeMelee;
             }
 
@@ -86,7 +86,7 @@ public class Ataque : MonoBehaviour
                 SFXManager.instance.PlaySound(SFXManager.instance.airHitSound);
                 PerformUpAttack(_damage);
                 _anim.SetTrigger("upAttack");
-                _ataqueArriba.SetActive(true);
+                //_ataqueArriba.SetActive(true);
                 Debug.Log("Ataque hacia arriba"); 
                 //_timeSiguienteMelee = Time.time + _timeMelee;
             }
@@ -107,18 +107,18 @@ public class Ataque : MonoBehaviour
                 DownAttack(_damage);
                 _anim.SetTrigger("isDownAttack");
                 Debug.Log("Ataque Hacia Abajo en salto");
-                _ataqueAbajo.SetActive(true);
+                //_ataqueAbajo.SetActive(true);
                 //_timeSiguienteMelee = Time.time + _timeMelee;
             }
 
             //Controla la desactivacion del ataque a melee
-            if(Time.time >= _timeSiguienteMelee)
+            /*if(Time.time >= _timeSiguienteMelee)
             {
                 _ataqueArriba.SetActive(false);
                 _ataqueCentro.SetActive(false);
                 _ataqueAbajo.SetActive(false);
                 _timeSiguienteMelee = Time.time + _timeMelee;
-            }
+            }*/
 
             //Retroceso
             /*if (impact.magnitude > 0.2f)

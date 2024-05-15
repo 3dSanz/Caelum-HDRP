@@ -28,6 +28,8 @@ public class Boss : MonoBehaviour
     //Jump Attack
     public float jump_distance;
     public bool direction_Skill;
+    public GameObject[] posicionSalto;
+    int randomJump;
 
     //Fase1
     public int fase = 1;
@@ -95,7 +97,7 @@ public class Boss : MonoBehaviour
                         //JUMPATTACK
                         //if (fase == 2)
                         //{
-                            jump_distance += 1 * Time.deltaTime;
+                            //jump_distance += 1 * Time.deltaTime;
                             _anim.SetBool("walk", false);
                             _anim.SetBool("run", false);
                             _anim.SetBool("attack", false);
@@ -103,7 +105,7 @@ public class Boss : MonoBehaviour
                             //_anim.SetFloat("skills", 1);
                             _anim.SetTrigger("jump");
                             //hit_Select = 1;
-                            rango.GetComponent<CapsuleCollider>().enabled = false;
+                            /*rango.GetComponent<CapsuleCollider>().enabled = false;
                             Direction_Attack_Start();
 
                             if (direction_Skill)
@@ -114,7 +116,7 @@ public class Boss : MonoBehaviour
                                 }
                                 //_anim.SetTrigger("jump");
                                 transform.Translate(Vector3.forward * 8 * Time.deltaTime);
-                            }
+                            }*/
                         //}
                         /*else
                         {
@@ -147,6 +149,12 @@ public class Boss : MonoBehaviour
     public void Direction_Attack_Final()
     {
         direction_Skill = false;
+    }
+
+    public void JumpPosition()
+    {
+        randomJump = Random.Range(0, 2);
+        transform.position = posicionSalto[randomJump].transform.position;
     }
 
     //Melee
