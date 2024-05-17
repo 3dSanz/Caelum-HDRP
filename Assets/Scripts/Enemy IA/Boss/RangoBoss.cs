@@ -8,6 +8,8 @@ public class RangoBoss : MonoBehaviour
     public Animator _anim;
     public Boss boss;
     public int melee;
+    private float _tiempoEntreGolpes;
+    [SerializeField] private bool _golpeando = true;
 
 
     void Awake()
@@ -18,10 +20,10 @@ public class RangoBoss : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        StartCoroutine(TimingEntreGolpes());
+        if (other.CompareTag("Player") && _golpeando == true)
         {
             melee = Random.Range(0, 3);
-            StartCoroutine(TimingEntreGolpes());
             switch (melee)
             {
                 case 0:
@@ -29,10 +31,6 @@ public class RangoBoss : MonoBehaviour
                     _anim.SetFloat("skills",0);
                     SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack1Boss);
                     boss.hit_Select = 0;
-                    if(boss.fase == 1)
-                    {
-                        StartCoroutine(TimingEntreGolpes());
-                    }
                     break;
 
                 case 1:
@@ -40,10 +38,6 @@ public class RangoBoss : MonoBehaviour
                     _anim.SetFloat("skills", 0.5f);
                     SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack2Boss);
                     boss.hit_Select = 0;
-                    if(boss.fase == 1)
-                    {
-                        StartCoroutine(TimingEntreGolpes());
-                    }
                     break;
                 case 2:
                     //Golpe3
@@ -52,7 +46,6 @@ public class RangoBoss : MonoBehaviour
                         _anim.SetFloat("skills", 1f);
                         SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack3Boss);
                         boss.hit_Select = 0;
-                        StartCoroutine(TimingEntreGolpes());
                     }
                     break;
                     
@@ -67,6 +60,9 @@ public class RangoBoss : MonoBehaviour
 
     IEnumerator TimingEntreGolpes()
     {
-        yield return new WaitForSeconds(2);
+        _golpeando = false;
+        _tiempoEntreGolpes = Random.Range(1.5f, 3f);
+        yield return new WaitForSeconds(_tiempoEntreGolpes);
+        _golpeando = true;
     }
 }
