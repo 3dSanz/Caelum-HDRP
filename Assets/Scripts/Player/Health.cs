@@ -10,10 +10,17 @@ public class Health : MonoBehaviour
     private SFXManager sfxManager;
     private TransicionEscena _tescena;
     private ParticleSystem _pSystem;
+    [SerializeField] private GameObject _particulaCura;
+    private VisualEffect _vfxHeal;
     public float _currentHealth = 4f;
+    public float _maxHealth = 4f;
     public bool _isAlive = true;
     [SerializeField] GameObject[] _hpIU;
     [SerializeField] GameObject[] _noHpIU;
+    [SerializeField] GameObject[] _siPociones;
+    [SerializeField] GameObject[] _noPociones;
+    public int _currentPotions = 2;
+    public int _maxPotions = 2;
 
     void Start()
     {
@@ -21,11 +28,30 @@ public class Health : MonoBehaviour
         sfxManager = GameObject.Find("SFXManager").GetComponent<SFXManager>();
         _tescena = GameObject.Find("TransicionEscena").GetComponent<TransicionEscena>();
         _pSystem = GameObject.Find("ParticulaGolpeado").GetComponent<ParticleSystem>();
+        _vfxHeal = GameObject.Find("ParticulaCura").GetComponent<VisualEffect>();
     }
 
     void Update()
     {
         ControlUIHP();
+        ControlUIPotions();
+        if (Input.GetKeyDown(KeyCode.E) && _currentPotions > 0 && _currentHealth != _maxHealth)
+        {
+            Heal();
+            _currentPotions--;
+        }
+
+        if(_currentPotions > _maxPotions)
+        {
+            _currentPotions = _maxPotions;
+            _currentHealth++;
+            _vfxHeal.Play();
+            SFXManager.instance.PlaySound(SFXManager.instance.playerHeal);
+            if (_currentHealth > _maxHealth)
+            {
+                _currentHealth = _maxHealth;
+            }
+        }
     }
 
     public void TakeDamage(float amount)
@@ -53,6 +79,17 @@ public class Health : MonoBehaviour
         }
     }
 
+    void Heal()
+    {
+        _currentHealth++;
+        _vfxHeal.Play();
+        SFXManager.instance.PlaySound(SFXManager.instance.playerHeal);
+        if (_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+    }
+
     private void Die()
     {
         Destroy(this.gameObject);
@@ -63,7 +100,37 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(2);
     }*/
+    private void ControlUIPotions()
+    {
+        if (_currentPotions == 2)
+        {
+            _siPociones[0].SetActive(true);
+            _siPociones[1].SetActive(true);
 
+            _noPociones[0].SetActive(false);
+            _noPociones[1].SetActive(false);
+        }
+        else if (_currentPotions == 1)
+        {
+            _siPociones[0].SetActive(true);
+            _siPociones[1].SetActive(false);
+
+
+            _noPociones[0].SetActive(false);
+            _noPociones[1].SetActive(true);
+
+        }
+        else if (_currentPotions == 0)
+        {
+            _siPociones[0].SetActive(false);
+            _siPociones[1].SetActive(false);
+
+
+            _noPociones[0].SetActive(true);
+            _noPociones[1].SetActive(true);
+
+        }
+    }
     private void ControlUIHP()
     {
         if (_currentHealth == 4)

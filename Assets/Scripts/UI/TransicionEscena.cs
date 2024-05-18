@@ -78,6 +78,18 @@ public class TransicionEscena : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
+    public void EfectoCambioEscena()
+    {
+        gameObject.SetActive(true);
+        StartCoroutine(EfectoCE());
+    }
+
+    IEnumerator EfectoCE()
+    {
+        _anim.SetTrigger("iniciar");
+        yield return new WaitForSeconds(Final.length);
+    }
+
     public void ExitGame()
     {
         gameObject.SetActive(true);

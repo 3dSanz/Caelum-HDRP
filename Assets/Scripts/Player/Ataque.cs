@@ -29,7 +29,7 @@ public class Ataque : MonoBehaviour
 
     //Ataque
     //Dano ataque normal
-    [SerializeField] private float _damage = 1f;
+    public float _damage = 1f;
 
     private float _horizontal;
     [SerializeField] private float _timeMelee;
@@ -63,7 +63,7 @@ public class Ataque : MonoBehaviour
             {
                 //SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.airHitSound);
-                PerformAttack(_damage);
+                //PerformAttack(_damage);
                 //_anim.SetBool("isAttacking",true);
                 _anim.SetTrigger("isAttack");
                 Debug.Log("Ataque Normal");
@@ -84,7 +84,7 @@ public class Ataque : MonoBehaviour
             {
                 //SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.airHitSound);
-                PerformUpAttack(_damage);
+                //PerformUpAttack(_damage);
                 _anim.SetTrigger("upAttack");
                 //_ataqueArriba.SetActive(true);
                 Debug.Log("Ataque hacia arriba"); 
@@ -104,7 +104,7 @@ public class Ataque : MonoBehaviour
             {
                 //SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.airHitSound);
-                DownAttack(_damage);
+                //DownAttack(_damage);
                 _anim.SetTrigger("isDownAttack");
                 Debug.Log("Ataque Hacia Abajo en salto");
                 //_ataqueAbajo.SetActive(true);
@@ -210,7 +210,7 @@ public class Ataque : MonoBehaviour
         }*/
     }
 
-    void PerformUpAttack(float dmg)
+    public void PerformUpAttack(float dmg)
     {
        Collider[] enemies = Physics.OverlapSphere(_attackUp.position, attackRadius, enemyLayer);
 
@@ -234,7 +234,7 @@ public class Ataque : MonoBehaviour
         }*/
     }
 
-    void DownAttack(float dmg)
+    public void DownAttack(float dmg)
     {
         //animator.SetTrigger("DownwardAttack"); // Activa la animacion de el ataque hacia abajo
         Collider[] enemies = Physics.OverlapSphere(_attackDown.position, attackRadius, enemyLayer);
