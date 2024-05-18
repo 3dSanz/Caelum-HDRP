@@ -20,7 +20,7 @@ public class RangoBoss : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(TimingEntreGolpes());
+        //StartCoroutine(TimingEntreGolpes());
         if (other.CompareTag("Player") && _golpeando == true)
         {
             melee = Random.Range(0, 3);

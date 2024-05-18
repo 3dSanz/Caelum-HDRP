@@ -30,6 +30,8 @@ public class Boss : MonoBehaviour
     public bool direction_Skill;
     public GameObject[] posicionSalto;
     int randomJump;
+    [SerializeField] private float _timeSiguienteSalto;
+    [SerializeField] private float _timeSalto = 10f;
 
     //Fase1
     public int fase = 1;
@@ -95,15 +97,15 @@ public class Boss : MonoBehaviour
 
                     case 1:
                         //JUMPATTACK
-                        //if (fase == 2)
-                        //{
+                        if (fase == 2)
+                        {
                             //jump_distance += 1 * Time.deltaTime;
-                            _anim.SetBool("walk", false);
+                            /*_anim.SetBool("walk", false);
                             _anim.SetBool("run", false);
                             _anim.SetBool("attack", false);
                             //_anim.SetBool("attack", true);
                             //_anim.SetFloat("skills", 1);
-                            _anim.SetTrigger("jump");
+                            _anim.SetTrigger("jump");*/
                             //hit_Select = 1;
                             /*rango.GetComponent<CapsuleCollider>().enabled = false;
                             Direction_Attack_Start();
@@ -117,12 +119,20 @@ public class Boss : MonoBehaviour
                                 //_anim.SetTrigger("jump");
                                 transform.Translate(Vector3.forward * 8 * Time.deltaTime);
                             }*/
-                        //}
-                        /*else
+                            if (Time.time >= _timeSiguienteSalto)
+                            {
+                             _anim.SetBool("walk", false);
+                             _anim.SetBool("run", false);
+                             _anim.SetBool("attack", false);
+                             _anim.SetTrigger("jump");
+                             _timeSiguienteSalto = Time.time + _timeSalto;
+                            }
+                        }
+                        else
                         {
                             rutina = 0;
                             cronometro = 0;
-                        }*/
+                        }
                         break;
                 }
             }
@@ -192,19 +202,7 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*barra.fillAmount = hp_min / hp_max;
-        if(hp_min > 0)
-        {
-            Vivo();
-        }else
-        {
-            if(!muerto)
-            {
-                _anim.SetTrigger("dead");
-                _sfxboss.enabled = false;
-                muerto = true;
-            }
-        }*/
         
+
     }
 }
