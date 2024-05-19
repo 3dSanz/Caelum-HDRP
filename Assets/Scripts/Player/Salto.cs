@@ -145,6 +145,7 @@ public class Salto : MonoBehaviour
         {
             _isGrounded = false;
             _anim.SetBool("Grounded",_isGrounded);
+            SFXManager.instance.PlaySound(SFXManager.instance.playerJump);
             //_rigidbody.AddForce(new Vector3(0,_alturaSalto,0));
             _rigidbody.AddForce(new Vector3(0,Mathf.Sqrt(_alturaSalto * -2 * Physics.gravity.y),0), ForceMode.Impulse);
         }
@@ -157,7 +158,6 @@ public class Salto : MonoBehaviour
         }else 
         {
             _isGrounded = false;
-            SFXManager.instance.PlaySound(SFXManager.instance.playerJump);
         }
 
         _anim.SetBool("Grounded",_isGrounded);
