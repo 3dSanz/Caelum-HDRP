@@ -17,6 +17,10 @@ public class Enemy : MonoBehaviour
     NavMeshAgent _agent;
     SpawnMoney _sMoney;
     private ParticleSystem _pSystem;
+
+    //[SerializeField] private GameObject _onDeath;
+    //private ParticleSystem _onDeathPS;
+
     Boss _boss;
 
     //Transform para en la funcion Awake hacer que la IA busque todo objeto con el Tag "Player"
@@ -64,6 +68,7 @@ public class Enemy : MonoBehaviour
         _boss = GetComponent<Boss>();
         _bgm = GameObject.Find("SoundManager").GetComponent<SoundManager>();
         _entry = GameObject.Find("Activation Boss").GetComponent<EntradaBoss>();
+        //_onDeathPS = _onDeath.GetComponent<ParticleSystem>();
     }
     void Start()
     {
@@ -143,22 +148,24 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float amount)
     {
         _currentHealth -= amount;
-        StartCoroutine(ParticulaDanoRecibido());
-        //_pSystem.Play();
+        //StartCoroutine(ParticulaDanoRecibido());
+        _pSystem.Clear();
+        _pSystem.Play();
 
         if (_currentHealth <= 0 && _normalEnemy == true && _bossEnemy == false)
         {
+            //_onDeathPS.Play();
             Die();
             _sMoney.InstanciarMonedas();
         }
     }
 
-    IEnumerator ParticulaDanoRecibido()
+    /*IEnumerator ParticulaDanoRecibido()
     {
         _pSystem.Play();
         yield return new WaitForSeconds(0.3f);
         _pSystem.Clear();
-    }
+    }*/
 
     IEnumerator WaitToWatch()
     {

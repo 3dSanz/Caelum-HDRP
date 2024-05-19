@@ -73,6 +73,7 @@ public class Movimiento : MonoBehaviour
     public bool facingRight;
 
     private SaveManager save;
+    private SaveManagerTerra save2;
     WalkSound walkSound;
     bool isPlaying;
     Salto _jump;
@@ -88,6 +89,7 @@ public class Movimiento : MonoBehaviour
         _vfxRun = GameObject.Find("ParticulaRunPolvo").GetComponent<VisualEffect>();
         facingRight = true;
         save = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+        save2 = GameObject.Find("SaveManager").GetComponent<SaveManagerTerra>();
         walkSound = GameObject.Find("WalkSound").GetComponent<WalkSound>();
     }
 
@@ -151,30 +153,24 @@ public class Movimiento : MonoBehaviour
     void PlayerPosition()
     {
         transform.position = new Vector3 (save.playerPosition.x, save.playerPosition.y, save.playerPosition.z);
+        transform.position = new Vector3 (save2.playerPosition.x, save2.playerPosition.y, save2.playerPosition.z);
     }
 
     void OnTriggerEnter(Collider other)
     {
             if(other.gameObject.tag == "CP1")
             {
-                save.checkPoint = "1";
+                //save.checkPoint = "1";
                 Debug.Log("Save!");
                 save.SaveData();
             }
 
-            if(other.gameObject.tag == "CP2")
-            {
-                save.checkPoint = "2";
-                Debug.Log("Save!");
-                save.SaveData();
-            }
-
-            if(other.gameObject.tag == "CP3")
-            {
-                save.checkPoint = "3";
-                Debug.Log("Save!");
-                save.SaveData();
-            }
+        if (other.gameObject.tag == "CP2")
+        {
+            //save.checkPoint = "1";
+            Debug.Log("Save!");
+            save2.SaveData();
+        }
     }
 
     /*void Movement()

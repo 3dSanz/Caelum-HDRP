@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -16,7 +17,15 @@ public class SoundManager : MonoBehaviour
     void Awake()
     {
         source = GetComponent<AudioSource>();
-        source.clip = lvl1Music;
+        Scene currentScene = SceneManager.GetActiveScene();
+        if(currentScene.buildIndex == 1)
+        {
+            source.clip = lvl1Music;
+        }else if(currentScene.buildIndex == 3)
+        {
+            source.clip = lvl2Music;
+        }
+
         source.Play();
         source.loop = true;
     }

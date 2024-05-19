@@ -8,19 +8,20 @@ public class Health : MonoBehaviour
 {
     private Animator _anim;
     private SFXManager sfxManager;
+    private SaveVidasMonedas _save;
     private TransicionEscena _tescena;
     private ParticleSystem _pSystem;
     [SerializeField] private GameObject _particulaCura;
     private VisualEffect _vfxHeal;
-    public float _currentHealth = 4f;
-    public float _maxHealth = 4f;
+    public float _currentHealth;
+    public float _maxHealth;
     public bool _isAlive = true;
     [SerializeField] GameObject[] _hpIU;
     [SerializeField] GameObject[] _noHpIU;
     [SerializeField] GameObject[] _siPociones;
     [SerializeField] GameObject[] _noPociones;
-    public int _currentPotions = 2;
-    public int _maxPotions = 2;
+    public float _currentPotions;
+    public float _maxPotions;
 
     void Start()
     {
@@ -29,6 +30,10 @@ public class Health : MonoBehaviour
         _tescena = GameObject.Find("TransicionEscena").GetComponent<TransicionEscena>();
         _pSystem = GameObject.Find("ParticulaGolpeado").GetComponent<ParticleSystem>();
         _vfxHeal = GameObject.Find("ParticulaCura").GetComponent<VisualEffect>();
+        _save = GameObject.Find("SaveItems").GetComponent<SaveVidasMonedas>();
+        _currentHealth = _save._currentHP;
+        _currentPotions = _save._currentP;
+
     }
 
     void Update()
@@ -70,6 +75,7 @@ public class Health : MonoBehaviour
                 SFXManager.instance.PlaySound(SFXManager.instance.deathSound);
                 //Invoke(nameof(Die), 1.5f);
                 _isAlive = false;
+                _save.DeleteDataHP();
             }
         }
         
@@ -100,6 +106,16 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(2);
     }*/
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "CP1" || other.gameObject.tag == "CP2")
+        {
+            //save.checkPoint = "1";
+            Debug.Log("Items and Life Saved!");
+            _save.SaveData();
+        }
+    }
     private void ControlUIPotions()
     {
         if (_currentPotions == 2)

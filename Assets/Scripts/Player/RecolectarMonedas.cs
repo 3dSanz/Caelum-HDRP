@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.VFX.VFXTypeAttribute;
 
 public class RecolectarMonedas : MonoBehaviour
 {   
     public Text coinText;
-    int contMonedas;
+    public float contMonedas;
+    private SaveVidasMonedas _save;
 
+    void Start()
+    {
+        _save = GameObject.Find("SaveItems").GetComponent<SaveVidasMonedas>();
+        contMonedas = _save._totalMonedas;
+    }
     private void OnTriggerEnter(Collider other) 
     {
         if (other.gameObject.tag == "ColisionMoneda")
