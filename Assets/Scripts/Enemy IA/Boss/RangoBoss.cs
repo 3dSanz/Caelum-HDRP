@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.VFX;
 using UnityEngine;
 
 public class RangoBoss : MonoBehaviour
@@ -39,6 +40,7 @@ public class RangoBoss : MonoBehaviour
                     SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack2Boss);
                     boss.hit_Select = 0;
                     break;
+
                 case 2:
                     //Golpe3
                     if(boss.fase == 2)
@@ -65,4 +67,6 @@ public class RangoBoss : MonoBehaviour
         yield return new WaitForSeconds(_tiempoEntreGolpes);
         _golpeando = true;
     }
+
+
 }

@@ -32,6 +32,7 @@ public class Boss : MonoBehaviour
     int randomJump;
     [SerializeField] private float _timeSiguienteSalto;
     [SerializeField] private float _timeSalto = 10f;
+    private ParticleSystem _particulaGolpeBoss;
 
     //Fase1
     public int fase = 1;
@@ -52,6 +53,7 @@ public class Boss : MonoBehaviour
         _enemy = GetComponent<Enemy>();
         _agent = GetComponent<NavMeshAgent>();
         walkBossSound = GameObject.Find("WalkBossSound").GetComponent<WalkSound>();
+        _particulaGolpeBoss = GameObject.Find("ParticulaGolpeBoss").GetComponent<ParticleSystem>();
     }
 
     public void Comportamiento_Boss()
@@ -195,6 +197,11 @@ public class Boss : MonoBehaviour
         }
 
         Comportamiento_Boss();
+    }
+
+    public void GolpeFuerteParticula()
+    {
+        _particulaGolpeBoss.Play();
     }
 
 
