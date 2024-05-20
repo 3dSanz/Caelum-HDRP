@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour
 
     //Puntos de patrulla
     [SerializeField] Transform[] _patrolPoints;
+    private int _currentPatrolIndex = 0;
 
     //Rangos de deteccion y de ataque de la IA
     [SerializeField] float _detectionRange = 2;
@@ -46,7 +47,7 @@ public class Enemy : MonoBehaviour
     private float _timeSiguienteGolpe;
     [SerializeField] private float attackRadius = 1.2f;
     [SerializeField] private LayerMask playerLayer;
-    [SerializeField] private bool facingRight = false;
+    //[SerializeField] private bool facingRight = false;
 
     [SerializeField] float horizontal;
     [SerializeField] private float _zPosition = 83.6f;
@@ -58,6 +59,10 @@ public class Enemy : MonoBehaviour
 
     SoundManager _bgm;
     EntradaBoss _entry;
+
+    public bool _isFacingRight = true;
+    private bool _isMoving = false;
+    private float _tolerance = 4f;
 
     void Awake()
     {
@@ -73,7 +78,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _currentHealth = _maxHealth;
-        PuntoAleatorio();
+        //_agent.destination = _patrolPoints[UnityEngine.Random.Range(0,_patrolPoints.Length)].position;
         _currentState = State.Patroling;
     }
 
@@ -95,7 +100,7 @@ public class Enemy : MonoBehaviour
             }
             MovementAI();
 
-            float horizontal = _agent.velocity.x;
+            //float horizontal = _agent.velocity.x;
 
             if(Time.time >= _timeSiguienteGolpe)
             {
@@ -112,7 +117,7 @@ public class Enemy : MonoBehaviour
             }*/
             //Flip();
 
-            _agent.Move(_agent.desiredVelocity * Time.deltaTime);
+            /*_agent.Move(_agent.desiredVelocity * Time.deltaTime);
 
             // Obtiene la posición actual del agente
             Vector3 position = _agent.transform.position;
@@ -121,7 +126,7 @@ public class Enemy : MonoBehaviour
             position.z = _zPosition;
 
             // Aplica la nueva posición al agente
-            _agent.transform.position = position;
+            _agent.transform.position = position;*/
         }
         if (_normalEnemy == false && _bossEnemy == true)
         {
@@ -223,10 +228,6 @@ public class Enemy : MonoBehaviour
         InvokeRepeating("SpawnBullets", 0f, spawnInterval);*/
     }
 
-    void PuntoAleatorio()
-    {
-        _agent.destination = _patrolPoints[UnityEngine.Random.Range(0,_patrolPoints.Length)].position;
-    }
 
     bool EnRango(float _rango)
     {
@@ -261,7 +262,7 @@ public class Enemy : MonoBehaviour
 
     void Flip()
 {
-    // Establecer el destino del agente
+    /*// Establecer el destino del agente
     _agent.SetDestination(_agent.destination);
 
     // Obtener la dirección a la que el agente debe mirar
@@ -272,7 +273,15 @@ public class Enemy : MonoBehaviour
     Quaternion rotation = Quaternion.LookRotation(lookDirection);
 
     // Aplicar la rotación al transform del agente
-    _agent.transform.rotation = rotation;
+    _agent.transform.rotation = rotation;*/
+
+
+
+    _isFacingRight = !_isFacingRight;
+    Vector3 characterScale = transform.localScale;
+    characterScale.x *= -1;
+    transform.localScale = characterScale;
+    
 }
 
     void MovementAI()
@@ -280,11 +289,38 @@ public class Enemy : MonoBehaviour
         if(_toPlayer == true && _normalEnemy == true)
         {
             _agent.destination = _player.position;
+            Vector3 targetPosition = _player.position;
+            Vector3 directionToTarget = targetPosition - transform.position;
+            if (directionToTarget.x > 0 && !_isFacingRight)
+            {
+                Flip();
+            }else if (directionToTarget.x < 0 && _isFacingRight)
+            {
+                Flip();
+            }
         }
 
-        if(_toPatrolPoint == true && _normalEnemy == true)
+        if(_toPatrolPoint == true && _normalEnemy == true && !_isMoving)
         {
-            PuntoAleatorio();
+            _isMoving = true;
+            //_agent.destination = _patrolPoints[UnityEngine.Random.Range(0,_patrolPoints.Length)].position;
+            //Vector3 targetPosition = _patrolPoints[UnityEngine.Random.Range(0,_patrolPoints.Length)].position;
+            _agent.destination = _patrolPoints[_currentPatrolIndex].position;
+            Vector3 targetPosition = _patrolPoints[_currentPatrolIndex].position;
+            Vector3 directionToTarget = targetPosition - transform.position;
+            if (directionToTarget.x > 0 && !_isFacingRight)
+            {
+                Flip();
+            }else if (directionToTarget.x < 0 && _isFacingRight)
+            {
+                Flip();
+            }
+        }
+
+        if (Vector3.Distance(transform.position, _patrolPoints[_currentPatrolIndex].position) < _tolerance)
+        {
+            _isMoving = false;
+            _currentPatrolIndex = (_currentPatrolIndex + 1) % _patrolPoints.Length;
         }
 
     }
