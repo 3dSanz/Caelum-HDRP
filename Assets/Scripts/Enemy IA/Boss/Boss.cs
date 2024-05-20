@@ -59,7 +59,7 @@ public class Boss : MonoBehaviour
 
     public void Comportamiento_Boss()
     {
-        if(Vector3.Distance(transform.position, target.transform.position) < 15)
+        if (Vector3.Distance(transform.position, target.transform.position) < 15)
         {
             var lookPos = target.transform.position - transform.position;
             lookPos.y = 0;
@@ -75,14 +75,15 @@ public class Boss : MonoBehaviour
                         //WALK
                         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
                         _anim.SetBool("walk", true);
-                        if(_anim.GetBool("walk") && !walkBossSound.IsPlaying("caminar"))
+                        if (_anim.GetBool("walk") && !walkBossSound.IsPlaying("caminar"))
                         {
-                                walkBossSound.PlaySound("caminar");
-                        }else
-                            {
-                                walkBossSound.StopSound("caminar");
-                            }
-                            
+                            walkBossSound.PlaySound("caminar");
+                        }
+                        else
+                        {
+                            walkBossSound.StopSound("caminar");
+                        }
+
                         _anim.SetBool("run", false);
                         if (transform.rotation == rotation)
                         {
@@ -124,11 +125,11 @@ public class Boss : MonoBehaviour
                             }*/
                             if (Time.time >= _timeSiguienteSalto)
                             {
-                             _anim.SetBool("walk", false);
-                             _anim.SetBool("run", false);
-                             _anim.SetBool("attack", false);
-                             _anim.SetTrigger("jump");
-                             _timeSiguienteSalto = Time.time + _timeSalto;
+                                _anim.SetBool("walk", false);
+                                _anim.SetBool("run", false);
+                                _anim.SetBool("attack", false);
+                                _anim.SetTrigger("jump");
+                                _timeSiguienteSalto = Time.time + _timeSalto;
                             }
                         }
                         else
@@ -141,7 +142,7 @@ public class Boss : MonoBehaviour
             }
         }
 
-        
+
     }
 
     public void Final_Anim()
@@ -191,7 +192,7 @@ public class Boss : MonoBehaviour
 
     public void Vivo()
     {
-        if(_enemy._currentHealth < 15)
+        if (_enemy._currentHealth < 15)
         {
             fase = 2;
             time_rutina = 1;
@@ -212,11 +213,17 @@ public class Boss : MonoBehaviour
     }
 
 
-
     // Update is called once per frame
     void Update()
     {
-        
+        if (_anim.GetCurrentAnimatorStateInfo(0).IsName("attack"))
+        {
+            _agent.speed = 0;
+        }
+        else
+        {
+            _agent.speed = speed; // Asegúrate de que 'speed' es la velocidad normal del jefe
+        }
 
     }
 }

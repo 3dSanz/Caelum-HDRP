@@ -6,21 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
-    //[SerializeField] private Text checkPointText;
     [SerializeField] public string checkPoint;
     [SerializeField] public Vector3 playerPosition;
+    [SerializeField] private float _positionX;
+    [SerializeField] private float _positionY;
+    [SerializeField] private float _positionZ;
 
     Movimiento player;
 
-
     void Awake()
     {
-        LoadData(); 
+        LoadData();
     }
+
     void Start()
     {
         player = GameObject.Find("Parcy").GetComponent<Movimiento>();
-
     }
 
     void Update()
@@ -30,29 +31,36 @@ public class SaveManager : MonoBehaviour
 
     public void SaveData()
     {
-        PlayerPrefs.SetString("checkpoint", checkPoint);   
-        PlayerPrefs.SetFloat("position x", player.transform.position.x);
-        PlayerPrefs.SetFloat("position y", player.transform.position.y);
-        PlayerPrefs.SetFloat("position z", player.transform.position.z);
+        string sceneName = SceneManager.GetActiveScene().name;
+        PlayerPrefs.SetString(sceneName + "checkpoint", checkPoint);
+        PlayerPrefs.SetFloat(sceneName + "position x", player.transform.position.x);
+        PlayerPrefs.SetFloat(sceneName + "position y", player.transform.position.y);
+        PlayerPrefs.SetFloat(sceneName + "position z", player.transform.position.z);
 
         LoadData();
     }
 
     void LoadData()
     {
-        playerPosition = new Vector3(PlayerPrefs.GetFloat("position x", 8.82f), PlayerPrefs.GetFloat("position y", -0.5f), PlayerPrefs.GetFloat("position z", 83.6f));
-        //playerPosition = new Vector3(PlayerPrefs.GetFloat("position x", 507.65f), PlayerPrefs.GetFloat("position y", 5.14f), PlayerPrefs.GetFloat("position z", 83.6f));
+        string sceneName = SceneManager.GetActiveScene().name;
+        if (PlayerPrefs.HasKey(sceneName + "position x"))
+        {
+            playerPosition = new Vector3(PlayerPrefs.GetFloat(sceneName + "position x"), PlayerPrefs.GetFloat(sceneName + "position y"), PlayerPrefs.GetFloat(sceneName + "position z"));
+        }
+        else
+        {
+            playerPosition = new Vector3(_positionX, _positionY, _positionZ);
+        }
     }
 
     public void DeleteData()
     {
-        PlayerPrefs.DeleteKey("checkpoint");
-        PlayerPrefs.DeleteKey("position x");
-        PlayerPrefs.DeleteKey("position y");
-        PlayerPrefs.DeleteKey("position z");
-        //PlayerPrefs.DeleteAll(); Se carga todos los PlayerPrefs de TODOS los scripts
+        string sceneName = SceneManager.GetActiveScene().name;
+        PlayerPrefs.DeleteKey(sceneName + "checkpoint");
+        PlayerPrefs.DeleteKey(sceneName + "position x");
+        PlayerPrefs.DeleteKey(sceneName + "position y");
+        PlayerPrefs.DeleteKey(sceneName + "position z");
+
         LoadData();
     }
-
-    
 }
