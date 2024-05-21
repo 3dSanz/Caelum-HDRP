@@ -25,5 +25,6 @@ public class FinDemoAE : MonoBehaviour
     public void Final()
     {
         _final.SetActive(true);
+        //aaa
     }
 }
