@@ -8,8 +8,7 @@ public class FinDemo : MonoBehaviour
     Animator _anim;
     public GameObject _camaraTree;
     public GameObject _camaraPrincipal;
-    public GameObject _bossColliders;
-    public GameObject _bossUI;
+    public GameObject _interfaz;
     [SerializeField] private float _secondsToWait = 1f;
 
     private void Awake()
@@ -24,8 +23,8 @@ public class FinDemo : MonoBehaviour
         {
             _camaraTree.SetActive(true);
             _camaraPrincipal.SetActive(false);
+            _interfaz.SetActive(false);
             _bgm.StopBGM();
-            SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.presentationBoss);
             StartCoroutine(PauseToWatch());
             GetComponent<BoxCollider>().enabled = false;
         }
