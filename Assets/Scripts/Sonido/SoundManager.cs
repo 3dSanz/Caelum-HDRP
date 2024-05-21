@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip lvl1Boss;
     public AudioClip lvl2Music;
     public AudioClip lvl2Boss;
+    public AudioClip lvl2Tree;
 
     private AudioSource source;
 
@@ -32,7 +33,7 @@ public class SoundManager : MonoBehaviour
 
     public void ChangeBGM(AudioClip newClip)
     {
-        source.Stop(); // Detén la música actual
+        source.Stop(); // Detï¿½n la mï¿½sica actual
         source.clip = newClip; // Asigna el nuevo clip
         source.Play(); // Comienza a reproducir el nuevo clip
     }
