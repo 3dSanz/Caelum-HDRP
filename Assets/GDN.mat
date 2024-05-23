@@ -48,8 +48,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CullMode: 2
     - _OUTLINE: 0
-    - _Outline_Width: 13.4
+    - _Outline_Width: 0.94
     - _utsVersionY: 9
     - _utsVersionZ: 6
     m_Colors: []

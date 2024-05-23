@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DialogueEditor;
 
-public class PR_02_Conver : MonoBehaviour
+public class GUM11_Conver : MonoBehaviour
 {
     public NPCConversation myConversation;
 
