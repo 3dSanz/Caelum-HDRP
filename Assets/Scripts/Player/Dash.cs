@@ -77,11 +77,13 @@ public class Dash : MonoBehaviour
     private Rigidbody rb;
     private Animator _anim;
     private Health _hp;
+    private Salto _jump;
     private Vector3 dashStartPosition;
     private Vector3 finalDashDirection;
     private float dashTimer;
     private bool _directionPressed;
     [SerializeField] private bool isDashing = false;
+    [SerializeField] private bool airDashPerformed = false;
     private float _horizontal;
 
     private void Start()
@@ -89,6 +91,7 @@ public class Dash : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         _anim = GetComponentInChildren<Animator>();
         _hp = GetComponentInChildren<Health>();
+        _jump = GetComponent<Salto>();
         _pSystem = GameObject.Find("ParticulaDash").GetComponent<ParticleSystem>();
     }
 
@@ -97,8 +100,9 @@ public class Dash : MonoBehaviour
         if(_hp._isAlive == true)
         {
             _horizontal = Input.GetAxisRaw("Horizontal");
-            if (Input.GetKeyDown(KeyCode.Z) && !isDashing && _horizontal != 0)
+            if (Input.GetKeyDown(KeyCode.Z) && !isDashing && _horizontal != 0 && airDashPerformed == false)
             {
+                airDashPerformed = true;
                 dashStartPosition = transform.position;
 
                 dashTimer = 0f;
@@ -108,6 +112,11 @@ public class Dash : MonoBehaviour
                 SFXManager.instance.StopSound();
                 SFXManager.instance.PlaySound(SFXManager.instance.dashSound);
                 _pSystem.Play();
+            }
+
+            if(_jump._isGrounded == true)
+            {
+                airDashPerformed = false;
             }
 
             if (isDashing)
