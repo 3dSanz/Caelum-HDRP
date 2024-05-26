@@ -65,6 +65,32 @@ public class TransicionEscena : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void CambiarEscena3()
+    {
+        gameObject.SetActive(true);
+        StartCoroutine(Play2());
+    }
+
+    IEnumerator Play2()
+    {
+        _anim.SetTrigger("iniciar");
+        yield return new WaitForSeconds(Final.length);
+        SceneManager.LoadScene(3);
+    }
+
+    public void CambiarEscena4()
+    {
+        gameObject.SetActive(true);
+        StartCoroutine(Play3());
+    }
+
+    IEnumerator Play3()
+    {
+        _anim.SetTrigger("iniciar");
+        yield return new WaitForSeconds(Final.length);
+        SceneManager.LoadScene(4);
+    }
+
     public void CambiarEscena2()
     {
         gameObject.SetActive(true);

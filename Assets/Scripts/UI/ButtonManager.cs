@@ -20,6 +20,11 @@ public class ButtonManager : MonoBehaviour
         _tescena.CambiarEscena1();
     }
 
+    public void PlayGame2()
+    {
+        _tescena.CambiarEscena3();
+    }
+
     public void ExitGame()
     {
         _tescena.ExitGame();

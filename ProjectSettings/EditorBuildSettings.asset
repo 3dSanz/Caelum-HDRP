@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tree.unity
     guid: ffbce645809ef4d4b842907e8054daac
+  - enabled: 1
+    path: Assets/Scenes/MenuMuerte 1.unity
+    guid: 233c35a9a12228d4cb70f906f4016e94
   m_configObjects: {}

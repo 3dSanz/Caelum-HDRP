@@ -22,6 +22,7 @@ public class Health : MonoBehaviour
     [SerializeField] GameObject[] _noPociones;
     public float _currentPotions;
     public float _maxPotions;
+    int sceneNumber;
 
     void Start()
     {
@@ -33,6 +34,7 @@ public class Health : MonoBehaviour
         _save = GameObject.Find("SaveItems").GetComponent<SaveVidasMonedas>();
         _currentHealth = _save._currentHP;
         _currentPotions = _save._currentP;
+        sceneNumber = SceneManager.GetActiveScene().buildIndex;
 
     }
 
@@ -79,9 +81,14 @@ public class Health : MonoBehaviour
             }
         }
         
-        if(_isAlive == false)
+        if(_isAlive == false && sceneNumber == 1)
         {
             _tescena.CambiarEscena2();
+        }
+
+        if (_isAlive == false && sceneNumber == 3)
+        {
+            _tescena.CambiarEscena4();
         }
     }
 
