@@ -100,7 +100,7 @@ public class Dash : MonoBehaviour
         if(_hp._isAlive == true)
         {
             _horizontal = Input.GetAxisRaw("Horizontal");
-            if (Input.GetKeyDown(KeyCode.Z) && !isDashing && _horizontal != 0 && airDashPerformed == false)
+            if (Input.GetButtonDown("Fire2") && !isDashing && _horizontal != 0 && airDashPerformed == false)
             {
                 airDashPerformed = true;
                 dashStartPosition = transform.position;
@@ -126,13 +126,13 @@ public class Dash : MonoBehaviour
 
                 //Vector3 dashDirection = transform.forward;
                 int _dashDirection = 0;
-                if (Input.GetKey(KeyCode.A))
+                if (_horizontal < 0)
                 {
                     //finalDashDirection = -dashDirection;
                     _dashDirection = -1;
                     _directionPressed = true;
                 }
-                else if (Input.GetKey(KeyCode.D))
+                else if (_horizontal > 0)
                 {
                     //finalDashDirection = dashDirection;
                     _dashDirection = 1;

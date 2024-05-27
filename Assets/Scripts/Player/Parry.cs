@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Parry : MonoBehaviour
-{
+{/*
     Ataque _attack;
     Animator _anim;
     private Health _hp;
@@ -78,5 +78,5 @@ public class Parry : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(_parcy.position, meleeRange);
-    }
+    }*/
 }

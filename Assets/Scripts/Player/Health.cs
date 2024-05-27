@@ -42,7 +42,7 @@ public class Health : MonoBehaviour
     {
         ControlUIHP();
         ControlUIPotions();
-        if (Input.GetKeyDown(KeyCode.E) && _currentPotions > 0 && _currentHealth != _maxHealth)
+        if (Input.GetButtonDown("Fire3") && _currentPotions > 0 && _currentHealth != _maxHealth)
         {
             Heal();
             _currentPotions--;

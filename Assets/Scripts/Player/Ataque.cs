@@ -32,6 +32,7 @@ public class Ataque : MonoBehaviour
     public float _damage = 1f;
 
     private float _horizontal;
+    private float verticalInput;
     [SerializeField] private float _timeMelee;
     private float _timeSiguienteMelee;
 
@@ -58,6 +59,7 @@ public class Ataque : MonoBehaviour
         if(_hp._isAlive == true)
         {
             _horizontal = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
             //Ataque
             if (Input.GetButtonDown("Fire1") && _lookDown == false && _lookUp == false /*&& Time.time >= _timeSiguienteMelee*/)
             {
@@ -72,10 +74,10 @@ public class Ataque : MonoBehaviour
             }
 
             //Ataque hacia arriba
-            if (Input.GetKeyDown(KeyCode.W))
+            if (verticalInput > 0)
             {
                 _lookUp = true;
-            }else if(Input.GetKeyUp(KeyCode.W))
+            }else
             {
                 _lookUp = false;
             }
@@ -92,10 +94,10 @@ public class Ataque : MonoBehaviour
             }
 
             //Ataque hacia abajo aire
-            if (Input.GetKeyDown(KeyCode.S))
+            if (verticalInput < 0)
             {
                 _lookDown = true;
-            }else if(Input.GetKeyUp(KeyCode.S))
+            }else
             {
             _lookDown = false;
             }
