@@ -19,7 +19,7 @@ public class CameraTrigger : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X) && dentro == true)
+        if ((Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.B)) && dentro == true)
         {
             iniciarConversacion.SetActive(true);
             cinemachineCamera.SetActive(true); // Activa la cámara

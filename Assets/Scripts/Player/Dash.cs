@@ -100,7 +100,7 @@ public class Dash : MonoBehaviour
         if(_hp._isAlive == true)
         {
             _horizontal = Input.GetAxisRaw("Horizontal");
-            if (Input.GetButtonDown("Fire2") && !isDashing && _horizontal != 0 && airDashPerformed == false)
+            if ((Input.GetButtonDown("Fire2") || Input.GetButtonDown("RBButton")) && !isDashing && _horizontal != 0 && airDashPerformed == false)
             {
                 airDashPerformed = true;
                 dashStartPosition = transform.position;

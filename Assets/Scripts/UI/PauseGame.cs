@@ -8,7 +8,7 @@ public class PauseGame : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetButtonDown("StartButton") || Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused; // Cambia el estado de pausa
             Pause();
