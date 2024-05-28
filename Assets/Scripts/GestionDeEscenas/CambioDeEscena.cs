@@ -21,7 +21,7 @@ public class CambioDeEscena : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             _canvasX.SetActive(true);
-            if(Input.GetKeyDown(KeyCode.X))
+            if(Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2"))
             {
                 TransicionEscena.instance.EfectoCambioEscena();
                 SceneManager.LoadScene(_numeroEscena);
@@ -34,7 +34,7 @@ public class CambioDeEscena : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             _canvasX.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2"))
             {
                 TransicionEscena.instance.EfectoCambioEscena();
                 SceneManager.LoadScene(_numeroEscena);

@@ -12,6 +12,15 @@ public class RangoBoss : MonoBehaviour
     private float _tiempoEntreGolpes;
     [SerializeField] private bool _golpeando = true;
 
+    float timeAtaque1 = 1.3f;
+    float timeSiguienteAtaque1;
+
+    float timeAtaque2 = 2.5f;
+    float timeSiguienteAtaque2;
+
+    float timeAtaque3 = 2f;
+    float timeSiguienteAtaque3;
+
 
     void Awake()
     {
@@ -29,25 +38,38 @@ public class RangoBoss : MonoBehaviour
             {
                 case 0:
                     //Golpe1
-                    _anim.SetFloat("skills",0);
-                    SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack1Boss);
-                    boss.hit_Select = 0;
+                    if (Time.time >= timeSiguienteAtaque1)
+                    {
+                        _anim.SetFloat("skills",0);
+                        SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack1Boss);
+                        boss.hit_Select = 0;
+                        timeSiguienteAtaque1 = Time.time + timeAtaque1;
+                    }
+                    
                     break;
 
                 case 1:
                     //Golpe2
-                    _anim.SetFloat("skills", 0.5f);
-                    SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack2Boss);
-                    boss.hit_Select = 0;
+                    if (Time.time >= timeSiguienteAtaque2)
+                    {
+                        _anim.SetFloat("skills", 0.5f);
+                        SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack2Boss);
+                        boss.hit_Select = 0;
+                        timeSiguienteAtaque2 = Time.time + timeAtaque2;
+                    }
                     break;
 
                 case 2:
                     //Golpe3
                     if(boss.fase == 2)
                     {
-                        _anim.SetFloat("skills", 1f);
-                        SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack3Boss);
-                        boss.hit_Select = 0;
+                        if (Time.time >= timeSiguienteAtaque3)
+                        {
+                            _anim.SetFloat("skills", 1f);
+                            SFXEnemyManager.instance.PlaySound(SFXEnemyManager.instance.attack3Boss);
+                            boss.hit_Select = 0;
+                            timeSiguienteAtaque3 = Time.time + timeAtaque3;
+                        }
                     }
                     break;
                     
