@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float spawnInterval = 3f;
 
     [SerializeField] private float damage = 1f;
-    [SerializeField] private float _timeGolpe = 2f;
+    [SerializeField] private float _timeGolpe = 1f;
     private float _timeSiguienteGolpe;
     [SerializeField] private float attackRadius = 1.2f;
     [SerializeField] private LayerMask playerLayer;
