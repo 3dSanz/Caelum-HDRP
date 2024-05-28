@@ -60,6 +60,7 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.DeleteKey(sceneName + "position x");
         PlayerPrefs.DeleteKey(sceneName + "position y");
         PlayerPrefs.DeleteKey(sceneName + "position z");
+        PlayerPrefs.DeleteAll();
 
         LoadData();
     }
